@@ -169,6 +169,33 @@ export const IconKey = ({ size, className }: P) => (
   </svg>
 )
 
+export const IconClock = ({ size, className }: P) => (
+  <svg {...base(size)} className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </svg>
+)
+
+export const IconUser = ({ size, className }: P) => (
+  <svg {...base(size)} className={className}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+  </svg>
+)
+
+export const IconWallet = ({ size, className }: P) => (
+  <svg {...base(size)} className={className}>
+    <path d="M19 7V5.5A1.5 1.5 0 0 0 17.5 4H5a2 2 0 0 0 0 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V6" />
+    <path d="M16 14h.01" />
+  </svg>
+)
+
+export const IconExpand = ({ size, className }: P) => (
+  <svg {...base(size)} className={className}>
+    <path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" />
+  </svg>
+)
+
 export const IconMenu = ({ size, className }: P) => (
   <svg {...base(size)} className={className}>
     <path d="M4 7h16M4 12h16M4 17h16" />
