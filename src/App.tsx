@@ -6,6 +6,8 @@ import { IconWhatsApp } from './components/Icons'
 import { linkWhatsApp } from './config/loja'
 import Home from './pages/Home'
 import Veiculo from './pages/Veiculo'
+import Estoque from './pages/Estoque'
+import Creditos from './pages/Creditos'
 import NaoEncontrado from './pages/NaoEncontrado'
 
 function useRolagem() {
@@ -33,12 +35,14 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/estoque" element={<Estoque />} />
           <Route path="/veiculo/:id" element={<Veiculo />} />
+          <Route path="/creditos" element={<Creditos />} />
           <Route path="*" element={<NaoEncontrado />} />
         </Routes>
       </main>
       <Footer />
-      {!pathname.startsWith('/veiculo/') && (
+      {pathname !== '/estoque' && !pathname.startsWith('/veiculo/') && (
         <a className="whats-flutuante" href={linkWhatsApp()} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp">
           <IconWhatsApp size={28} />
         </a>

@@ -40,9 +40,9 @@ export function Footer() {
         <div>
           <h3 className="footer__titulo">Navegação</h3>
           <ul className="footer__lista">
-            <li><Link to="/#estoque">Estoque</Link></li>
-            <li><Link to="/#vendidos">Vendidos</Link></li>
-            <li><Link to="/#condicoes">Condições</Link></li>
+            <li><Link to="/estoque">Estoque</Link></li>
+            <li><Link to="/#lojistas">Para lojistas</Link></li>
+            <li><Link to="/#como-funciona">Como funciona</Link></li>
             <li><Link to="/#localizacao">Localização</Link></li>
           </ul>
         </div>
@@ -50,7 +50,9 @@ export function Footer() {
 
       <div className="container footer__base">
         <span>© {ano} {loja.nome}</span>
-        <span>{loja.cidade} - {loja.uf}</span>
+        <span>
+          Imagens ilustrativas · <Link to="/creditos">Créditos das fotos</Link>
+        </span>
       </div>
     </footer>
   )

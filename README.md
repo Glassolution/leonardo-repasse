@@ -15,38 +15,54 @@ npm run dev
 2. A Vercel detecta o Vite sozinha (build `npm run build`, saída `dist`).
 3. O `vercel.json` já cuida das rotas (`/veiculo/...`).
 
+## Páginas
+
+- `/` — página inicial (busca rápida, marcas, destaques, lojistas, categorias, vendidos, localização)
+- `/estoque` — catálogo único com filtros (marca, câmbio, preço, categoria, cor, ano, combustível, itens, abaixo da FIPE)
+- `/veiculo/<id>` — detalhe do veículo com botão de WhatsApp
+- `/creditos` — créditos das fotos ilustrativas
+
 ## Atualizar o estoque
 
 Tudo fica em `src/data/veiculos.ts`. Cada veículo:
 
 ```ts
 {
-  id: 'honda-hr-v-exl-2025',        // vira /veiculo/honda-hr-v-exl-2025
+  id: 'honda-hr-v-exl-2023',        // vira /veiculo/honda-hr-v-exl-2023
   marca: 'Honda',
   modelo: 'HR-V',
-  versao: 'EXL',
+  versao: '1.5 EXL CVT',
   categoria: 'SUV',                 // Hatch | Sedã | SUV | Picape
-  anoFabricacao: 2025,
-  anoModelo: 2025,
-  km: 18000,
-  cambio: 'CVT',
-  combustivel: 'Flex',
+  anoFabricacao: 2022,
+  anoModelo: 2023,
+  km: 31200,
+  motor: '1.5',
+  cambio: 'CVT',                    // Manual | Automático | CVT
+  combustivel: 'Flex',              // Flex | Gasolina | Diesel | Híbrido
   cor: 'Branco',
-  preco: 149900,                    // sem preço aparece "Consultar valor"
-  fotos: ['/veiculos/honda-hr-v-exl-2025/1.jpg', '/veiculos/honda-hr-v-exl-2025/2.jpg'],
+  preco: 138900,                    // sem preço aparece "Consultar valor"
+  precoAnterior: 142900,            // opcional, aparece riscado
+  fipe: 145600,                     // opcional, calcula "abaixo da FIPE"
+  itens: ['Multimídia', 'Câmera de ré'],
+  fotos: ['/veiculos/honda-hr-v-exl-2023/1.jpg', '/veiculos/honda-hr-v-exl-2023/2.jpg'],
   status: 'disponivel',             // disponivel | reservado | vendido
   observacoes: 'Texto livre sobre o carro.',
-  entrada: '2026-10-20',            // ordena "chegaram por último"
+  entrada: '2026-10-20',            // ordena "mais recentes"
 }
 ```
 
-- Fotos: coloque em `public/veiculos/<id>/` (JPG ou WEBP, 1600px de largura é suficiente).
-- Sem foto, o card mostra a faixa azul com modelo e ano, no mesmo estilo dos posts.
-- `status: 'vendido'` tira o carro do estoque e leva para "Entregues recentemente".
+- Fotos reais: coloque em `public/veiculos/<id>/` (JPG ou WEBP, 1600px de largura basta).
+- `status: 'vendido'` tira o carro do estoque e leva para "Vendidos recentemente".
+
+## Imagens ilustrativas
+
+As fotos atuais vêm do Wikimedia Commons (licenças livres) e são carregadas direto de lá
+(`src/data/imagens.ts`). Os créditos ficam em `/creditos`. Quando trocar pelas fotos reais da loja,
+a página de créditos pode ser removida.
 
 ## Dados da loja
 
 WhatsApp, endereço e Instagram ficam em `src/config/loja.ts`.
 
 > O número de WhatsApp foi lido na fachada da loja (foto do Instagram). Confirme antes de publicar.
-> O estoque atual é de exemplo, montado a partir dos posts; troque pelos veículos reais.
+> O estoque atual é de EXEMPLO (preços, km e fotos ilustrativos). Troque pelos veículos reais antes de divulgar.

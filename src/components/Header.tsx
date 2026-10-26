@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Logo } from './Logo'
 import { IconClose, IconMenu, IconWhatsApp } from './Icons'
 import { linkWhatsApp } from '../config/loja'
 
 const links = [
-  { href: '/#estoque', label: 'Estoque' },
-  { href: '/#vendidos', label: 'Vendidos' },
-  { href: '/#condicoes', label: 'Condições' },
-  { href: '/#localizacao', label: 'Localização' },
+  { to: '/', label: 'Início' },
+  { to: '/estoque', label: 'Estoque' },
+  { to: '/#lojistas', label: 'Lojistas' },
+  { to: '/#como-funciona', label: 'Como funciona' },
+  { to: '/#localizacao', label: 'Localização' },
 ]
 
 export function Header() {
   const [aberto, setAberto] = useState(false)
+  const [rolou, setRolou] = useState(false)
+  const { pathname } = useLocation()
+  const sobreposto = pathname === '/'
+
+  useEffect(() => {
+    const aoRolar = () => setRolou(window.scrollY > 40)
+    aoRolar()
+    window.addEventListener('scroll', aoRolar, { passive: true })
+    return () => window.removeEventListener('scroll', aoRolar)
+  }, [])
+
   const fechar = () => setAberto(false)
+  const escuro = sobreposto && !rolou && !aberto
 
   return (
-    <header className="header">
+    <header className={`header ${escuro ? 'header--sobreposto' : 'header--claro'} ${sobreposto ? 'header--home' : ''}`}>
       <div className="container header__inner">
         <Link to="/" aria-label="Página inicial" onClick={fechar}>
-          <Logo />
+          <Logo variante={escuro ? 'clara' : 'escura'} />
         </Link>
 
         <nav className={`header__nav ${aberto ? 'is-open' : ''}`} aria-label="Principal">
-          {links.map((l) => (
-            <Link key={l.href} to={l.href} onClick={fechar}>
-              {l.label}
-            </Link>
-          ))}
+          {links.map((l) =>
+            l.to.includes('#') ? (
+              <Link key={l.to} to={l.to} onClick={fechar}>
+                {l.label}
+              </Link>
+            ) : (
+              <NavLink key={l.to} to={l.to} onClick={fechar} end>
+                {l.label}
+              </NavLink>
+            ),
+          )}
           <a className="btn btn--whats header__cta" href={linkWhatsApp()} target="_blank" rel="noreferrer">
             <IconWhatsApp size={18} />
             Chamar no WhatsApp
