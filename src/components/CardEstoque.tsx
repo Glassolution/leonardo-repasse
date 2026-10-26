@@ -1,83 +1,56 @@
 import { Link } from 'react-router-dom'
 import type { Veiculo } from '../data/veiculos'
-import { abaixoFipe, formatarAno, formatarMoeda, formatarPreco, kmCurto } from '../lib/format'
+import { abaixoFipe, formatarAno, formatarPreco } from '../lib/format'
 import { Foto } from './Foto'
-import { IconCheck, IconInfo } from './Icons'
+import { IconCalendar, IconGauge } from './Icons'
 
-// Card da página de estoque, no formato de inventário: título e preço no topo,
-// destaque central, foto, três números e lista de características.
+// Card do catálogo: foto, selo, nome em caixa alta, ano/km, preço e botão.
 export function CardEstoque({ veiculo }: { veiculo: Veiculo }) {
-  const diferenca = abaixoFipe(veiculo)
-  const caracteristicas = [`Cor ${veiculo.cor.toLowerCase()}`, `Motor ${veiculo.motor}`, `Câmbio ${veiculo.cambio === 'CVT' ? 'CVT' : veiculo.cambio.toLowerCase()}`, veiculo.categoria]
+  const url = `/veiculo/${veiculo.id}`
+  const reservado = veiculo.status === 'reservado'
+  const selo = reservado ? 'Reservado' : abaixoFipe(veiculo) ? 'Abaixo da FIPE' : 'Repasse'
 
   return (
-    <Link to={`/veiculo/${veiculo.id}`} className="ce">
-      <div className="ce__topo">
-        <div>
-          <h3 className="ce__modelo">
-            {veiculo.marca} {veiculo.modelo}
-          </h3>
-          <p className="ce__versao">{veiculo.versao}</p>
-          <p className="ce__versao">
-            {veiculo.status === 'reservado' ? <strong>Reservado</strong> : <strong>Repasse</strong>} com{' '}
-            {veiculo.km.toLocaleString('pt-BR')} km
-          </p>
-        </div>
-        <div className="ce__valores">
-          <p className="ce__preco">
-            {formatarPreco(veiculo.preco)}
-            {veiculo.precoAnterior && <s>{formatarMoeda(veiculo.precoAnterior)}</s>}
-          </p>
-          {veiculo.fipe && (
-            <p className="ce__fipe">
-              FIPE {formatarMoeda(veiculo.fipe)} <IconInfo size={13} />
-            </p>
-          )}
-        </div>
-      </div>
+    <article className="ce">
+      <p className="ce__etiqueta">Repasse</p>
 
-      {diferenca && (
-        <p className="ce__pilula">
-          {formatarMoeda(diferenca)} abaixo da FIPE <IconInfo size={14} />
-        </p>
-      )}
-
-      <div className="ce__foto">
+      <Link to={url} className="ce__foto" tabIndex={-1} aria-hidden>
         <Foto src={veiculo.fotos[0]} alt={`${veiculo.marca} ${veiculo.modelo} ${veiculo.versao}`} />
-      </div>
+        {veiculo.fotos.length > 0 && <span className="ce__contador">1/{veiculo.fotos.length}</span>}
+      </Link>
 
-      <dl className="ce__numeros">
-        <div>
-          <dd>
-            {kmCurto(veiculo.km)}
-            <small>km</small>
-          </dd>
-          <dt>Quilometragem</dt>
+      <div className="ce__corpo">
+        <div className="ce__selos">
+          <span className={`ce__selo ${reservado ? 'ce__selo--reservado' : ''}`}>{selo}</span>
+          <span className="ce__marca" aria-hidden>
+            L
+          </span>
         </div>
-        <div>
-          <dd>{formatarAno(veiculo)}</dd>
-          <dt>Ano</dt>
-        </div>
-        <div>
-          <dd>{veiculo.motor.split(' ')[0]}</dd>
-          <dt>Motor</dt>
-        </div>
-      </dl>
 
-      <div className="ce__listas">
-        <ul>
-          {caracteristicas.map((c) => (
-            <li key={c}>{c}</li>
-          ))}
+        <h3 className="ce__nome">
+          <Link to={url}>
+            {veiculo.marca} {veiculo.modelo}
+          </Link>
+        </h3>
+        <p className="ce__versao">
+          {veiculo.versao} {veiculo.cambio === 'Manual' ? 'Manual' : 'Automático'}
+        </p>
+
+        <ul className="ce__dados">
+          <li>
+            <IconCalendar size={18} /> {formatarAno(veiculo)}
+          </li>
+          <li>
+            <IconGauge size={18} /> {veiculo.km.toLocaleString('pt-BR')} Km
+          </li>
         </ul>
-        <ul className="ce__itens">
-          {veiculo.itens.map((i) => (
-            <li key={i}>
-              <IconCheck size={14} /> {i}
-            </li>
-          ))}
-        </ul>
+
+        <p className="ce__preco">{formatarPreco(veiculo.preco)}</p>
+
+        <Link to={url} className="ce__botao">
+          Ver oferta
+        </Link>
       </div>
-    </Link>
+    </article>
   )
 }

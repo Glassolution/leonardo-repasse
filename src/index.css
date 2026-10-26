@@ -1120,10 +1120,14 @@ button {
 }
 
 .estoque__cabecalho h1 {
-  font-family: var(--fonte);
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 800;
+}
+
+.estoque__cabecalho p {
+  margin-top: 4px;
+  font-size: 1.1rem;
+  color: var(--texto);
 }
 
 .estoque__corpo {
@@ -1396,8 +1400,8 @@ select.filtro__input {
 
 .estoque__grade {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .estoque__vazio {
@@ -1429,172 +1433,169 @@ select.filtro__input {
   margin-top: 20px;
 }
 
-/* Card de inventário */
+/* Card do catálogo */
 
 .ce {
   display: flex;
   flex-direction: column;
-  padding: 20px 20px 24px;
-  border-radius: 4px;
+  min-width: 0;
+  border: 1px solid #e3e5ea;
+  border-radius: 14px;
   background: #fff;
-  color: var(--texto);
+  overflow: hidden;
   transition: box-shadow 0.2s;
 }
 
 .ce:hover {
-  box-shadow: 0 4px 18px rgb(0 0 0 / 8%);
+  box-shadow: 0 10px 30px rgb(12 31 92 / 10%);
 }
 
-.ce__topo {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.ce__modelo {
-  font-family: var(--fonte);
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--tinta);
-}
-
-.ce__versao {
+.ce__etiqueta {
+  padding: 14px 16px 0;
   font-size: 0.82rem;
-  line-height: 1.4;
-  color: var(--texto);
-}
-
-.ce__versao strong {
-  color: var(--tinta);
-  font-weight: 600;
-}
-
-.ce__valores {
-  flex-shrink: 0;
-  text-align: right;
-}
-
-.ce__preco {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 0 6px;
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--tinta);
-}
-
-.ce__preco s {
-  order: 1;
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: var(--texto-suave);
-}
-
-.ce__fipe {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  font-size: 0.82rem;
-  color: var(--texto);
-}
-
-.ce__pilula {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  align-self: center;
-  margin-top: 16px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  background: var(--fundo-cinza);
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--tinta);
 }
 
 .ce__foto {
-  aspect-ratio: 16 / 9;
-  margin: 18px 0 20px;
-  border-radius: 4px;
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 11;
+  margin-top: 10px;
   overflow: hidden;
-  background: var(--fundo-cinza);
+  background: #fff;
 }
 
-.ce__numeros {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin: 0;
-  text-align: center;
+.ce__foto .foto {
+  transition: transform 0.4s;
 }
 
-.ce__numeros div {
+.ce:hover .ce__foto img {
+  transform: scale(1.03);
+}
+
+.ce__contador {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgb(23 26 32 / 55%);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ce__corpo {
   display: flex;
   flex-direction: column;
-  padding: 0 8px;
+  flex: 1;
+  padding: 18px 20px 20px;
 }
 
-.ce__numeros div + div {
-  border-left: 1px solid #d0d1d2;
-}
-
-.ce__numeros dd {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--tinta);
-  white-space: nowrap;
-}
-
-.ce__numeros small {
-  margin-left: 2px;
-  font-size: 0.8rem;
-}
-
-.ce__numeros dt {
-  font-size: 0.8rem;
-  color: var(--texto);
-}
-
-.ce__listas {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 24px;
-  padding: 0 12px;
-}
-
-.ce__listas ul,
-.ce__itens {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.8rem;
-  line-height: 1.4;
-}
-
-.ce__itens li {
+.ce__selos {
   display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
-.ce__itens svg {
-  flex-shrink: 0;
-  margin-top: 1px;
+.ce__selo {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--azul);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ce__selo--reservado {
+  background: #f5b82e;
+  color: #3b2900;
+}
+
+.ce__marca {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 34px;
+  border: 2px solid var(--azul);
+  border-radius: 8px 8px 14px 14px;
+  background: var(--marinho);
+  font-family: var(--fonte-logo);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: inset 0 -5px 0 var(--verde);
+}
+
+.ce__nome {
+  margin-top: 16px;
+  font-family: var(--fonte);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--tinta);
+}
+
+.ce__nome a:hover {
+  color: var(--azul);
+}
+
+.ce__versao {
+  margin-top: 6px;
+  font-size: 0.98rem;
+  line-height: 1.45;
   color: var(--texto-suave);
 }
 
-@media (max-width: 1080px) {
+.ce__dados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.98rem;
+  color: var(--texto-suave);
+}
+
+.ce__dados li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ce__preco {
+  margin: 14px 0 18px;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tinta);
+}
+
+.ce__botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  margin-top: auto;
+  border-radius: 10px;
+  background: var(--azul);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  transition: background-color 0.15s;
+}
+
+.ce__botao:hover {
+  background: var(--azul-escuro);
+}
+
+@media (max-width: 1180px) {
   .estoque__grade {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1678,23 +1679,9 @@ select.filtro__input {
   }
 }
 
-@media (max-width: 520px) {
-  .ce__topo {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .ce__valores {
-    text-align: left;
-  }
-
-  .ce__preco,
-  .ce__fipe {
-    justify-content: flex-start;
-  }
-
-  .ce__listas {
-    padding: 0;
+@media (max-width: 600px) {
+  .estoque__grade {
+    grid-template-columns: 1fr;
   }
 }
 

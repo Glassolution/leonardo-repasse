@@ -60,7 +60,12 @@ export default function Estoque() {
     <div className="estoque">
       <div className="estoque__cabecalho">
         <div className="container">
-          <h1>Estoque</h1>
+          <h1>
+            Carros à venda em {loja.cidade}/{loja.uf}
+          </h1>
+          <p>
+            {lista.length} {lista.length === 1 ? 'veículo encontrado' : 'veículos encontrados'}
+          </p>
         </div>
       </div>
 
@@ -195,8 +200,7 @@ export default function Estoque() {
         <div className="estoque__resultados">
           <div className="estoque__barra">
             <p className="estoque__aviso">
-              {lista.length} {lista.length === 1 ? 'veículo disponível' : 'veículos disponíveis'} · valores sujeitos a
-              confirmação <IconInfo size={14} />
+              Valores sujeitos a confirmação <IconInfo size={14} />
             </p>
             <div className="estoque__barra-acoes">
               <button className="btn btn--contorno btn--p estoque__abrir" onClick={() => setPainelAberto(true)}>
