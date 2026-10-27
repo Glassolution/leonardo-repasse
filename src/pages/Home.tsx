@@ -7,13 +7,10 @@ import { CardDestaque } from '../components/CardDestaque'
 import { Foto } from '../components/Foto'
 import {
   IconArrowRight,
-  IconCarCheck,
   IconCheckCircle,
   IconHandshake,
   IconInstagram,
-  IconKey,
   IconPin,
-  IconSearch,
   IconWhatsApp,
 } from '../components/Icons'
 import { linkInstagram, linkMaps, linkMapsEmbed, linkWhatsApp, loja } from '../config/loja'
@@ -27,13 +24,6 @@ const marcas = Object.entries(
 const categorias = (['SUV', 'Picape', 'Hatch', 'Sedã'] as Categoria[])
   .map((c) => ({ nome: c, lista: disponiveis.filter((v) => v.categoria === c) }))
   .filter((c) => c.lista.length > 0)
-
-const passos = [
-  { icone: <IconSearch size={26} />, titulo: 'Escolha o carro', texto: 'Veja o estoque no site ou passe na loja na Folha 27.' },
-  { icone: <IconWhatsApp size={24} />, titulo: 'Chame no WhatsApp', texto: 'Tire dúvidas, peça mais fotos e confirme a disponibilidade.' },
-  { icone: <IconCarCheck size={26} />, titulo: 'Veja de perto', texto: 'Agende uma visita para conferir o carro antes de fechar.' },
-  { icone: <IconKey size={26} />, titulo: 'Feche o negócio', texto: 'Pagamento, entrada e troca combinados direto com a gente.' },
-]
 
 export default function Home() {
   useEffect(() => {
@@ -183,48 +173,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="como-funciona" className="secao secao--cinza">
-        <div className="container">
-          <header className="secao__topo secao__topo--centro">
-            <p className="sobretitulo">Como funciona</p>
-            <h2>Do primeiro contato à chave na mão</h2>
-          </header>
-          <ol className="passos">
-            {passos.map((p, i) => (
-              <li key={p.titulo} className="passo">
-                <span className="passo__icone">{p.icone}</span>
-                <span className="passo__num">Passo {i + 1}</span>
-                <h3>{p.titulo}</h3>
-                <p>{p.texto}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="numeros">
-        <div className="container numeros__grid">
-          <div>
-            <strong>{disponiveis.length}</strong>
-            <span>veículos no pátio</span>
-          </div>
-          <div>
-            <strong>{marcas.length}</strong>
-            <span>marcas diferentes</span>
-          </div>
-          <div>
-            <strong>18,5 mil</strong>
-            <span>seguidores no Instagram</span>
-          </div>
-          <div>
-            <strong>Folha 27</strong>
-            <span>em frente ao Mix Mateus</span>
-          </div>
-        </div>
-      </section>
-
       {vendidos.length > 0 && (
-        <section className="secao">
+        <section className="secao secao--cinza">
           <div className="container">
             <header className="secao__topo">
               <div>
@@ -244,7 +194,7 @@ export default function Home() {
         </section>
       )}
 
-      <section id="localizacao" className="secao secao--cinza">
+      <section id="localizacao" className="secao">
         <div className="container local">
           <div className="local__info">
             <p className="sobretitulo">Localização</p>

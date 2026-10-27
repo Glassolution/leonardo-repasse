@@ -8,7 +8,6 @@ const links = [
   { to: '/', label: 'Início' },
   { to: '/estoque', label: 'Estoque' },
   { to: '/#lojistas', label: 'Lojistas' },
-  { to: '/#como-funciona', label: 'Como funciona' },
   { to: '/#localizacao', label: 'Localização' },
 ]
 

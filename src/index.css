@@ -635,7 +635,7 @@ button {
 
 .marcas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -921,104 +921,6 @@ button {
   font-family: var(--fonte-titulo);
   font-size: 1.4rem;
   color: #fff;
-}
-
-/* ---------- Passos ---------- */
-
-.passos {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.passo {
-  padding: 28px 24px;
-  border-radius: var(--raio);
-  background: #fff;
-  text-align: center;
-}
-
-.passo__icone {
-  display: inline-grid;
-  place-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--azul-claro);
-  color: var(--azul);
-}
-
-.passo__num {
-  display: block;
-  margin-top: 18px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--texto-suave);
-}
-
-.passo h3 {
-  margin-top: 4px;
-  font-size: 1.2rem;
-}
-
-.passo p {
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: var(--texto-suave);
-}
-
-@media (max-width: 960px) {
-  .passos {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 560px) {
-  .passos {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---------- Números ---------- */
-
-.numeros {
-  padding: 56px 0;
-  background: var(--marinho);
-  color: rgb(255 255 255 / 70%);
-}
-
-.numeros__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.numeros__grid div {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-left: 20px;
-  border-left: 2px solid var(--verde);
-}
-
-.numeros strong {
-  font-family: var(--fonte-titulo);
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-}
-
-@media (max-width: 760px) {
-  .numeros__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 16px;
-  }
 }
 
 /* ---------- Localização ---------- */

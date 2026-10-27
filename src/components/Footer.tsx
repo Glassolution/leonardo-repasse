@@ -42,7 +42,6 @@ export function Footer() {
           <ul className="footer__lista">
             <li><Link to="/estoque">Estoque</Link></li>
             <li><Link to="/#lojistas">Para lojistas</Link></li>
-            <li><Link to="/#como-funciona">Como funciona</Link></li>
             <li><Link to="/#localizacao">Localização</Link></li>
           </ul>
         </div>
