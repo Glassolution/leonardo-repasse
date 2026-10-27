@@ -16,16 +16,26 @@ import {
   IconTag,
   IconWhatsApp,
 } from '../components/Icons'
-import { abaixoFipe, formatarAno, formatarMoeda, formatarPreco } from '../lib/format'
+import { abaixoFipe, formatarAno, formatarMoeda } from '../lib/format'
 import { linkWhatsApp, loja } from '../config/loja'
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
 const marcas = [...new Set(disponiveis.map((v) => v.marca))].sort()
 
-const categorias = (['SUV', 'Picape', 'Hatch', 'Sedã'] as Categoria[])
-  .map((c) => ({ nome: c, lista: disponiveis.filter((v) => v.categoria === c) }))
-  .filter((c) => c.lista.length > 0)
+// Imagens recortadas (sem fundo) em /public/categorias, só para ilustrar cada tipo.
+const categorias = (
+  [
+    ['SUV', 'suv'],
+    ['Sedã', 'seda'],
+    ['Hatch', 'hatch'],
+    ['Picape', 'picape'],
+  ] as [Categoria, string][]
+).map(([nome, arquivo]) => ({
+  nome,
+  imagem: `/categorias/${arquivo}.webp`,
+  total: disponiveis.filter((v) => v.categoria === nome).length,
+}))
 
 const comDesconto = disponiveis
   .filter((v) => v.status === 'disponivel' && abaixoFipe(v))
@@ -104,14 +114,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="lp-secao">
+      <section className="lp-secao lp-secao--tipos">
         <div className="container">
-          <header className="lp-topo">
-            <div>
-              <h2>Navegue por categoria</h2>
-              <p>Escolha o tipo de carro e veja o que temos no pátio.</p>
-            </div>
-            <Link to="/estoque" className="lp-pilula">
+          <header className="lp-topo lp-topo--tipos">
+            <h2>Navegue por categoria</h2>
+            <Link to="/estoque" className="lp-pilula lp-pilula--azul">
               Ver todos os carros
             </Link>
           </header>
@@ -119,40 +126,31 @@ export default function Home() {
             {categorias.map((c) => (
               <Link key={c.nome} to={`/estoque?categoria=${encodeURIComponent(c.nome)}`} className="lp-tipo">
                 <div className="lp-tipo__foto">
-                  <Foto src={c.lista[0].fotos[0]} alt={c.nome} />
+                  <img src={c.imagem} alt={c.nome} loading="lazy" />
                 </div>
-                <strong>{c.nome}</strong>
-                <span>
-                  {c.lista.length} {c.lista.length === 1 ? 'carro' : 'carros'}
-                </span>
+                <div className="lp-tipo__info">
+                  <strong>{c.nome}</strong>
+                  <span>{c.total > 0 ? `${c.total} ${c.total === 1 ? 'carro' : 'carros'}` : 'Sob consulta'}</span>
+                </div>
               </Link>
             ))}
           </div>
+
+          {oferta && (
+            <div className="lp-oferta">
+              <div className="lp-oferta__texto">
+                <span className="lp-oferta__rotulo">Oferta especial</span>
+                <h2>Até {formatarMoeda(abaixoFipe(oferta) ?? 0)} abaixo</h2>
+                <p className="lp-oferta__sub">da tabela FIPE em carros do estoque</p>
+                <Link to="/estoque?fipe=1" className="lp-oferta__botao">
+                  Ver ofertas
+                </Link>
+              </div>
+              <img className="lp-oferta__carro" src="/categorias/seda.webp" alt="Sedã branco" loading="lazy" />
+            </div>
+          )}
         </div>
       </section>
-
-      {oferta && (
-        <section className="container">
-          <div className="lp-oferta">
-            <div className="lp-oferta__texto">
-              <span className="lp-oferta__rotulo">Oferta da semana</span>
-              <h2>
-                {oferta.marca} {oferta.modelo} {formatarAno(oferta)}
-              </h2>
-              <p className="lp-oferta__valor">{formatarMoeda(abaixoFipe(oferta) ?? 0)} abaixo da FIPE</p>
-              <p className="lp-oferta__detalhe">
-                {oferta.versao} · {formatarPreco(oferta.preco)}
-              </p>
-              <Link to={`/veiculo/${oferta.id}`} className="lp-oferta__botao">
-                Ver oferta <IconArrowRight size={16} />
-              </Link>
-            </div>
-            <div className="lp-oferta__foto">
-              <Foto src={oferta.fotos[0]} alt={`${oferta.marca} ${oferta.modelo}`} />
-            </div>
-          </div>
-        </section>
-      )}
 
       <section className="lp-secao">
         <div className="container">

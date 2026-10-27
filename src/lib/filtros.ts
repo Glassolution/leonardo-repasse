@@ -35,7 +35,7 @@ export const filtrosVazios: Filtros = {
 
 export const faixasPreco = [60000, 80000, 100000, 130000, 170000, 250000]
 
-/** Lê os filtros vindos da busca da página inicial (?marca=&categoria=&preco=&ano=). */
+/** Lê os filtros vindos da página inicial (?marca=&categoria=&preco=&ano=&fipe=1). */
 export function filtrosDaUrl(params: URLSearchParams): Filtros {
   const categoria = params.get('categoria') as Categoria | null
   return {
@@ -44,6 +44,7 @@ export function filtrosDaUrl(params: URLSearchParams): Filtros {
     categorias: categoria ? [categoria] : [],
     precoMax: Number(params.get('preco')) || 0,
     anoMin: Number(params.get('ano')) || 0,
+    soAbaixoFipe: params.get('fipe') === '1',
   }
 }
 

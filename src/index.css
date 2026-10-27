@@ -751,111 +751,165 @@ button {
 
 /* Categorias */
 
+.lp-secao--tipos {
+  padding-top: 72px;
+}
+
+.lp-topo--tipos {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.lp-topo--tipos h2 {
+  grid-column: 2;
+  text-align: center;
+}
+
+.lp-topo--tipos .lp-pilula {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.lp-pilula--azul {
+  border-color: #cfd9f5;
+  color: var(--azul);
+}
+
 .lp-tipos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 230px));
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
 }
 
 .lp-tipo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 14px 14px 18px;
-  border: 1px solid #edf0f4;
+  border: 1px solid #edf0f5;
   border-radius: 16px;
   background: #fff;
-  text-align: center;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgb(12 31 92 / 4%);
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 
 .lp-tipo:hover {
-  border-color: #c9d3f3;
-  box-shadow: 0 10px 24px rgb(12 31 92 / 8%);
+  box-shadow: 0 12px 28px rgb(12 31 92 / 10%);
+  transform: translateY(-2px);
 }
 
 .lp-tipo__foto {
-  width: 100%;
+  position: relative;
   aspect-ratio: 16 / 10;
-  margin-bottom: 14px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #f1f4f9;
+  background: linear-gradient(180deg, #f1f4fa 0%, #e9eef7 100%);
 }
 
-.lp-tipo strong {
-  font-size: 0.98rem;
+.lp-tipo__foto img {
+  position: absolute;
+  inset: 12% 11%;
+  width: 78%;
+  height: 76%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 8px rgb(15 25 45 / 18%));
+}
+
+.lp-tipo__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 16px 12px 18px;
+}
+
+.lp-tipo__info strong {
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--tinta);
 }
 
-.lp-tipo span {
-  margin-top: 2px;
-  font-size: 0.8rem;
+.lp-tipo__info span {
+  font-size: 0.78rem;
   color: var(--texto-suave);
 }
 
 /* Oferta */
 
 .lp-oferta {
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 32px;
-  padding: 40px 48px;
-  border-radius: 24px;
-  background: linear-gradient(120deg, var(--azul) 0%, #2d55d4 60%, #4a74ea 100%);
-  color: rgb(255 255 255 / 85%);
+  min-height: 280px;
+  margin-top: 56px;
+  padding: 44px 52px;
+  border-radius: 20px;
+  background: linear-gradient(100deg, #1a3aa6 0%, #2152cf 55%, #2e66e3 100%);
+  color: #fff;
   overflow: hidden;
 }
 
+.lp-oferta::after {
+  content: '';
+  position: absolute;
+  right: 6%;
+  bottom: 14%;
+  width: 46%;
+  height: 22%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(4 12 40 / 45%), transparent);
+  filter: blur(8px);
+}
+
+.lp-oferta__texto {
+  position: relative;
+  z-index: 1;
+  max-width: 46%;
+}
+
 .lp-oferta__rotulo {
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 .lp-oferta h2 {
-  margin-top: 8px;
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  font-weight: 800;
-  color: #fff;
-}
-
-.lp-oferta__valor {
   margin-top: 6px;
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-family: var(--fonte);
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #fff;
 }
 
-.lp-oferta__detalhe {
+.lp-oferta__sub {
   margin-top: 4px;
-  font-size: 0.9rem;
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  font-weight: 500;
+  color: rgb(255 255 255 / 92%);
 }
 
 .lp-oferta__botao {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 24px;
-  padding: 12px 22px;
+  margin-top: 26px;
+  padding: 12px 34px;
   border-radius: 999px;
   background: #fff;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--azul);
+  transition: background-color 0.15s;
 }
 
 .lp-oferta__botao:hover {
   background: var(--azul-claro);
 }
 
-.lp-oferta__foto {
-  aspect-ratio: 16 / 10;
-  border-radius: 18px;
-  overflow: hidden;
-  background: rgb(255 255 255 / 12%);
-  box-shadow: 0 24px 50px rgb(4 12 40 / 30%);
+.lp-oferta__carro {
+  position: absolute;
+  z-index: 1;
+  right: 4%;
+  bottom: 8%;
+  width: min(46%, 520px);
+  height: auto;
 }
 
 /* Motivos */
@@ -1222,14 +1276,56 @@ button {
     margin-top: 4px;
   }
 
-    .lp-oferta,
   .lp-lojistas__grid,
   .lp-aviso__grid {
     grid-template-columns: 1fr;
   }
 
+  .lp-topo--tipos {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+
+  .lp-topo--tipos h2 {
+    grid-column: 1;
+    text-align: left;
+  }
+
+  .lp-topo--tipos .lp-pilula {
+    grid-column: 2;
+  }
+
+  .lp-tipos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
   .lp-oferta {
-    padding: 28px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 0;
+    margin-top: 40px;
+    padding: 28px 24px 0;
+  }
+
+  .lp-oferta__texto {
+    max-width: none;
+  }
+
+  .lp-oferta__carro {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    align-self: center;
+    width: min(88%, 380px);
+    margin: 18px 0 16px;
+  }
+
+  .lp-oferta::after {
+    right: 15%;
+    bottom: 10px;
+    width: 70%;
+    height: 40px;
   }
 
   .lp-secao {
