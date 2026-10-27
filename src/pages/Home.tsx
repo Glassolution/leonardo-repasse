@@ -138,6 +138,8 @@ export default function Home() {
 
           {oferta && (
             <div className="lp-oferta">
+              <span className="lp-oferta__aneis" aria-hidden />
+              <span className="lp-oferta__piso" aria-hidden />
               <div className="lp-oferta__texto">
                 <span className="lp-oferta__rotulo">Oferta especial</span>
                 <h2>Até {formatarMoeda(abaixoFipe(oferta) ?? 0)} abaixo</h2>
