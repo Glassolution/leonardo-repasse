@@ -66,3 +66,4 @@ WhatsApp, endereço e Instagram ficam em `src/config/loja.ts`.
 
 > O número de WhatsApp foi lido na fachada da loja (foto do Instagram). Confirme antes de publicar.
 > O estoque atual é de EXEMPLO (preços, km e fotos ilustrativos). Troque pelos veículos reais antes de divulgar.
+> As avaliações em `src/data/avaliacoes.ts` são textos genéricos do MVP. Troque por avaliações reais ou esvazie a lista antes de publicar.

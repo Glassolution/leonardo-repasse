@@ -1,19 +1,18 @@
 import type { Avaliacao } from '../data/avaliacoes'
-
-const iniciais = (nome: string) =>
-  nome
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0].toUpperCase())
-    .join('')
+import { IconUser } from './Icons'
 
 export function CardAvaliacao({ avaliacao }: { avaliacao: Avaliacao }) {
   const { nome, cidade, nota, texto, foto } = avaliacao
   return (
     <figure className="av">
       <figcaption className="av__topo">
-        {foto ? <img className="av__foto" src={foto} alt="" /> : <span className="av__foto av__foto--iniciais">{iniciais(nome)}</span>}
+        {foto ? (
+          <img className="av__foto" src={foto} alt="" />
+        ) : (
+          <span className="av__foto av__foto--icone" aria-hidden>
+            <IconUser size={24} />
+          </span>
+        )}
         <span>
           <strong>{nome}</strong>
           <small>{cidade}</small>

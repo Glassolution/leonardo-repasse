@@ -1077,12 +1077,11 @@ button {
   object-fit: cover;
 }
 
-.av__foto--iniciais {
+.av__foto--icone {
   display: grid;
   place-items: center;
-  background: var(--azul);
-  font-weight: 700;
-  color: #fff;
+  background: var(--azul-claro);
+  color: var(--azul);
 }
 
 .av__estrelas {

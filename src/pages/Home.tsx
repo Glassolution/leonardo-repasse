@@ -181,8 +181,8 @@ export default function Home() {
                 <p>Opiniões de quem já comprou com a gente.</p>
               </header>
               <div className="lp-avaliacoes">
-                {avaliacoes.slice(0, 3).map((a) => (
-                  <CardAvaliacao key={a.nome} avaliacao={a} />
+                {avaliacoes.slice(0, 3).map((a, i) => (
+                  <CardAvaliacao key={i} avaliacao={a} />
                 ))}
               </div>
             </>
