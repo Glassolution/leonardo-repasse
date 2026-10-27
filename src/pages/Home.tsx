@@ -21,7 +21,6 @@ import { linkWhatsApp, loja } from '../config/loja'
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
-
 // Imagens recortadas (sem fundo) em /public/categorias, só para ilustrar cada tipo.
 const categorias = (
   [
