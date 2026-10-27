@@ -21,7 +21,6 @@ import { linkWhatsApp, loja } from '../config/loja'
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
-const marcas = [...new Set(disponiveis.map((v) => v.marca))].sort()
 
 // Imagens recortadas (sem fundo) em /public/categorias, só para ilustrar cada tipo.
 const categorias = (
@@ -279,18 +278,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-
-          <header className="lp-topo lp-topo--centro lp-topo--p lp-topo--bloco">
-            <h2>Marcas no estoque</h2>
-            <p>Clique para ver os carros de cada marca.</p>
-          </header>
-          <ul className="lp-marcas">
-            {marcas.map((m) => (
-              <li key={m}>
-                <Link to={`/estoque?marca=${encodeURIComponent(m)}`}>{m}</Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 

@@ -1412,34 +1412,6 @@ button {
   color: var(--texto-suave);
 }
 
-/* Marcas */
-
-.lp-marcas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 16px 40px;
-  margin: 0;
-  padding: 0 12px;
-  list-style: none;
-}
-
-.lp-marcas a {
-  font-family: var(--fonte-titulo);
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #2a2f3a;
-  opacity: 0.8;
-  transition: opacity 0.15s, color 0.15s;
-}
-
-.lp-marcas a:hover {
-  opacity: 1;
-  color: var(--azul);
-}
-
 /* Lojistas (chamada final) */
 
 .lp-aviso {
@@ -1655,14 +1627,6 @@ button {
     grid-auto-columns: 82%;
   }
 
-  .lp-marcas {
-    justify-content: center;
-    gap: 10px 28px;
-  }
-
-  .lp-marcas a {
-    font-size: 1.1rem;
-  }
 }
 
 /* ---------- Seções ---------- */

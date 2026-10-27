@@ -17,7 +17,7 @@ npm run dev
 
 ## Páginas
 
-- `/` — página inicial (busca, categorias, oferta, avaliações, destaques, descontos sobre a FIPE, depoimentos, equipe, marcas, lista para lojistas)
+- `/` — página inicial (busca, categorias, oferta, avaliações, destaques, descontos sobre a FIPE, depoimentos, equipe, lista para lojistas)
 - `/estoque` — catálogo único com filtros (marca, câmbio, preço, categoria, cor, ano, combustível, itens, abaixo da FIPE)
 - `/veiculo/<id>` — detalhe do veículo com botão de WhatsApp
 - `/creditos` — créditos das fotos ilustrativas
