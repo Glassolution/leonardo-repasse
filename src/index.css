@@ -403,9 +403,14 @@ button {
 /* ---------- Landing page ---------- */
 
 .lp-hero {
-  /* Laterais estendidas da mesma imagem: a paisagem ocupa a largura toda, como na referência.
-     Altura 100% faz o miolo de 1351 px coincidir com o palco. */
-  background: #fff url('/hero-lados.webp') center top / auto 100% no-repeat;
+  --respiro: clamp(56px, 9vh, 104px);
+  /* Faixa de céu acima da imagem para o título respirar. As laterais usam a mesma
+     imagem estendida (hero-lados.webp); com altura igual à do palco, o miolo coincide. */
+  padding-top: var(--respiro);
+  background:
+    linear-gradient(180deg, #fff var(--respiro), rgb(255 255 255 / 0%) calc(var(--respiro) + 18%)),
+    url('/hero-lados.webp') center bottom / auto calc(100% - var(--respiro)) no-repeat,
+    #fff;
 }
 
 /* A imagem (fundo, barra e carro) vem pronta em /public/hero.webp, 1351 x 850.
@@ -413,25 +418,40 @@ button {
 .lp-hero__palco {
   position: relative;
   /* Largura limitada para o hero inteiro (com a faixa de destaques) caber na altura da tela. */
-  width: min(100%, 1180px, max(900px, calc((100svh - 200px) * 1.5894)));
+  width: min(100%, 1180px, max(900px, calc((100svh - 200px - var(--respiro)) * 1.5894)));
   aspect-ratio: 1351 / 850;
   margin: 0 auto;
+}
+
+/* A imagem fica numa camada própria para a máscara das laterais não cortar o título. */
+.lp-hero__palco::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: url('/hero.webp') center / 100% 100% no-repeat;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 22%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 22%);
+  mask-composite: intersect;
 }
 
 .lp-hero__texto {
   position: absolute;
-  top: 0;
+  z-index: 1;
+  top: calc(-1 * var(--respiro));
   left: 0;
   right: 0;
-  height: 30.8%;
+  height: calc(30.8% + var(--respiro));
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 0 24px 1.2%;
+  justify-content: flex-end;
+  /* % de padding é relativo à largura do palco: ~50 px até a barra em 1100 px. */
+  padding: 0 24px 4.4%;
   text-align: center;
 }
 
@@ -457,6 +477,7 @@ button {
 /* Cobre exatamente a barra desenhada na imagem (x 130–1221, y 262–371). */
 .lp-hero__busca {
   position: absolute;
+  z-index: 1;
   left: calc(9.62% - 2px);
   width: calc(80.75% + 4px);
   top: calc(30.82% - 2px);
@@ -491,6 +512,7 @@ button {
 
 @media (max-width: 900px) {
   .lp-hero {
+    padding-top: 0;
     background: #fff;
   }
 
@@ -498,9 +520,10 @@ button {
     width: auto;
     aspect-ratio: auto;
     padding: 36px 16px 0;
-    background: none;
-    -webkit-mask-image: none;
-    mask-image: none;
+  }
+
+  .lp-hero__palco::before {
+    display: none;
   }
 
   .lp-hero__texto,
