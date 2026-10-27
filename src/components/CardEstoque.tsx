@@ -22,9 +22,6 @@ export function CardEstoque({ veiculo }: { veiculo: Veiculo }) {
       <div className="ce__corpo">
         <div className="ce__selos">
           <span className={`ce__selo ${reservado ? 'ce__selo--reservado' : ''}`}>{selo}</span>
-          <span className="ce__marca" aria-hidden>
-            L
-          </span>
         </div>
 
         <h3 className="ce__nome">

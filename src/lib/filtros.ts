@@ -7,6 +7,7 @@ export type Filtros = {
   busca: string
   marca: string
   cambio: '' | 'Automático' | 'Manual'
+  precoMin: number
   precoMax: number
   anoMin: number
   categorias: Categoria[]
@@ -21,6 +22,7 @@ export const filtrosVazios: Filtros = {
   busca: '',
   marca: '',
   cambio: '',
+  precoMin: 0,
   precoMax: 0,
   anoMin: 0,
   categorias: [],
@@ -56,6 +58,7 @@ export function aplicarFiltros(lista: Veiculo[], f: Filtros) {
       (!termo || normalizar(`${nomeCompleto(v)} ${v.anoModelo} ${v.cor}`).includes(termo)) &&
       (!f.marca || v.marca === f.marca) &&
       (!f.cambio || (f.cambio === 'Manual' ? !ehAutomatico(v) : ehAutomatico(v))) &&
+      (!f.precoMin || (v.preco !== undefined && v.preco >= f.precoMin)) &&
       (!f.precoMax || (v.preco !== undefined && v.preco <= f.precoMax)) &&
       (!f.anoMin || v.anoModelo >= f.anoMin) &&
       (!f.categorias.length || f.categorias.includes(v.categoria)) &&
@@ -82,7 +85,7 @@ export function aplicarFiltros(lista: Veiculo[], f: Filtros) {
 }
 
 export const contarFiltros = (f: Filtros) =>
-  [f.busca, f.marca, f.cambio, f.precoMax, f.anoMin, f.soAbaixoFipe].filter(Boolean).length +
+  [f.busca, f.marca, f.cambio, f.precoMin || f.precoMax, f.anoMin, f.soAbaixoFipe].filter(Boolean).length +
   f.categorias.length +
   f.cores.length +
   f.combustiveis.length +
