@@ -19,14 +19,6 @@ import {
 import { abaixoFipe, formatarAno, formatarMoeda, formatarPreco } from '../lib/format'
 import { linkWhatsApp, loja } from '../config/loja'
 
-// Foto de fundo do hero. Usa /public/hero-fundo.jpg se existir; senão o panorama do
-// Lake Minnewanka (Wikimedia Commons) e, por último, a foto do Unsplash.
-const FUNDOS_HERO = [
-  '/hero-fundo.jpg',
-  urlImagem('paisagem', 2400),
-  'https://unsplash.com/photos/a38486QPWfY/download?w=2400',
-]
-
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
 const marcas = [...new Set(disponiveis.map((v) => v.marca))].sort()
@@ -58,7 +50,6 @@ const motivos = [
 export default function Home() {
   const trilho = useRef<HTMLDivElement>(null)
   const [procura, setProcura] = useState('')
-  const [fundo, setFundo] = useState(0)
 
   useEffect(() => {
     document.title = `${loja.nome} | ${loja.cidade} - ${loja.uf}`
@@ -80,23 +71,22 @@ export default function Home() {
   return (
     <>
       <section className="lp-hero">
-        {fundo < FUNDOS_HERO.length && (
-          <img className="lp-hero__fundo" src={FUNDOS_HERO[fundo]} alt="" aria-hidden onError={() => setFundo((i) => i + 1)} />
-        )}
-        <div className="container lp-hero__texto">
-          <h1>
-            Seminovos multimarcas em {loja.cidade}
-            <br />
-            <span>Valor de repasse</span>, sem enrolação.
-          </h1>
-          <p>
-            Veja o estoque, compare com a tabela FIPE
-            <br />e feche direto com a loja pelo WhatsApp.
-          </p>
-          <BuscaRapida />
-        </div>
-        <div className="lp-hero__carro">
-          <img src="/hero-carro.webp" alt="SUV prata" width={611} height={320} fetchPriority="high" />
+        <div className="lp-hero__palco">
+          <div className="lp-hero__texto">
+            <h1>
+              Seminovos multimarcas em {loja.cidade}
+              <br />
+              <span>Valor de repasse</span>, sem enrolação.
+            </h1>
+            <p>
+              Veja o estoque, compare com a tabela FIPE
+              <br />e feche direto com a loja pelo WhatsApp.
+            </p>
+          </div>
+          <div className="lp-hero__busca">
+            <BuscaRapida />
+          </div>
+          <div className="lp-hero__cena" role="img" aria-label="SUV às margens de um lago com montanhas ao fundo" />
         </div>
       </section>
 
