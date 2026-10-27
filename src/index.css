@@ -452,11 +452,13 @@ button {
 }
 
 .lp-hero__carro {
+  --carro-w: min(520px, 84vw);
   position: relative;
   z-index: 1;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  /* Mesmo respiro da referência: 8,6% da largura do carro entre a barra e o teto. */
+  margin-top: calc(var(--carro-w) * 0.086);
   padding-bottom: 32px;
 }
 
@@ -475,7 +477,7 @@ button {
 
 .lp-hero__carro img {
   position: relative;
-  width: min(520px, 84vw);
+  width: var(--carro-w);
   height: auto;
 }
 
