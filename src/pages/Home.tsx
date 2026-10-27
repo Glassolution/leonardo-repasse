@@ -4,6 +4,8 @@ import { disponiveis, vendidos, type Categoria } from '../data/veiculos'
 import { urlImagem } from '../data/imagens'
 import { BuscaRapida } from '../components/BuscaRapida'
 import { CardVitrine } from '../components/CardVitrine'
+import { CardAvaliacao } from '../components/CardAvaliacao'
+import { avaliacoes } from '../data/avaliacoes'
 import { Foto } from '../components/Foto'
 import {
   IconArrowRight,
@@ -51,10 +53,10 @@ const destaques = [
 ]
 
 const motivos = [
-  { icone: <IconHandshake size={22} />, titulo: 'Repasse para lojistas', texto: 'Unidade ou lote, com lista atualizada.' },
-  { icone: <IconCar size={22} />, titulo: 'Multimarcas', texto: `${marcas.slice(0, 4).join(', ')} e mais.` },
-  { icone: <IconCarCheck size={22} />, titulo: 'Veja antes de fechar', texto: 'Agende uma visita para conferir.' },
-  { icone: <IconTag size={22} />, titulo: 'Comparado com a FIPE', texto: 'Diferença mostrada em cada anúncio.' },
+  { icone: <IconHandshake size={20} />, titulo: 'Repasse para lojistas', texto: 'Unidade ou lote, com lista atualizada.' },
+  { icone: <IconCar size={20} />, titulo: 'Multimarcas', texto: `${marcas.slice(0, 4).join(', ')} e mais.` },
+  { icone: <IconCarCheck size={20} />, titulo: 'Veja antes de fechar', texto: 'Agende uma visita para conferir.' },
+  { icone: <IconTag size={20} />, titulo: 'Comparado com a FIPE', texto: 'Diferença mostrada em cada anúncio.' },
 ]
 
 export default function Home() {
@@ -154,16 +156,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="lp-secao">
+      <section className="lp-secao lp-secao--depois">
         <div className="container">
-          <header className="lp-topo lp-topo--centro">
-            <h2>Por que comprar com a Leonardo?</h2>
+          <header className="lp-topo lp-topo--centro lp-topo--p">
+            <h2>Por que a Leonardo?</h2>
             <p>Repasse de veículos simples e direto.</p>
           </header>
           <div className="lp-motivos">
             {motivos.map((m) => (
               <div key={m.titulo} className="lp-motivo">
-                <span className="lp-icone lp-icone--suave">{m.icone}</span>
+                <span className="lp-motivo__icone">{m.icone}</span>
                 <span>
                   <strong>{m.titulo}</strong>
                   {m.texto}
@@ -171,14 +173,24 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section className="lp-secao lp-secao--cinza">
-        <div className="container">
-          <header className="lp-topo lp-topo--centro">
-            <h2>Chegaram no pátio</h2>
-            <p>Os últimos carros que entraram no estoque.</p>
+          {avaliacoes.length > 0 && (
+            <>
+              <header className="lp-topo lp-topo--centro lp-topo--p lp-topo--bloco">
+                <h2>O que dizem nossos clientes</h2>
+                <p>Opiniões de quem já comprou com a gente.</p>
+              </header>
+              <div className="lp-avaliacoes">
+                {avaliacoes.slice(0, 3).map((a) => (
+                  <CardAvaliacao key={a.nome} avaliacao={a} />
+                ))}
+              </div>
+            </>
+          )}
+
+          <header className="lp-topo lp-topo--centro lp-topo--p lp-topo--bloco">
+            <h2>Carros em destaque</h2>
+            <p>Os últimos que chegaram no pátio.</p>
           </header>
           <div className="lp-grade">
             {recentes.slice(0, 4).map((v) => (
