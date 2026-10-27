@@ -31,4 +31,22 @@ export const avaliacoes: Avaliacao[] = [
     nota: 4,
     texto: 'Fui ao pátio conferir antes de fechar. Tudo explicado e documentação em ordem.',
   },
+  {
+    nome: 'Cliente',
+    cidade: 'Parauapebas - PA',
+    nota: 5,
+    texto: 'Achei o carro que queria pelo site, mandei mensagem e no mesmo dia já estava vendo ele no pátio.',
+  },
+  {
+    nome: 'Cliente lojista',
+    cidade: 'Marabá - PA',
+    nota: 5,
+    texto: 'Recebo a lista de repasse com fotos de cada carro. Facilita muito na hora de escolher para a loja.',
+  },
+  {
+    nome: 'Cliente',
+    cidade: 'Marabá - PA',
+    nota: 5,
+    texto: 'Bom preço, carro revisado e atendimento atencioso do começo ao fim.',
+  },
 ]

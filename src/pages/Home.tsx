@@ -1,24 +1,24 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { disponiveis, vendidos, type Categoria } from '../data/veiculos'
-import { urlImagem } from '../data/imagens'
+import { disponiveis, type Categoria } from '../data/veiculos'
 import { BuscaRapida } from '../components/BuscaRapida'
 import { CardVitrine } from '../components/CardVitrine'
 import { CardAvaliacao } from '../components/CardAvaliacao'
 import { avaliacoes } from '../data/avaliacoes'
-import { Foto } from '../components/Foto'
 import {
   IconArrowRight,
   IconCar,
   IconCarCheck,
-  IconCheckCircle,
   IconChevron,
   IconHandshake,
+  IconKey,
   IconPin,
   IconTag,
+  IconUser,
+  IconWallet,
   IconWhatsApp,
 } from '../components/Icons'
-import { abaixoFipe, formatarAno, formatarMoeda } from '../lib/format'
+import { abaixoFipe, formatarMoeda } from '../lib/format'
 import { linkWhatsApp, loja } from '../config/loja'
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
@@ -59,9 +59,28 @@ const motivos = [
   { icone: <IconTag size={20} />, titulo: 'Comparado com a FIPE', texto: 'Diferença mostrada em cada anúncio.' },
 ]
 
+const passos = [
+  { titulo: 'Escolha o carro', texto: 'Veja o estoque no site ou passe na loja na Folha 27.', icone: <IconPin size={46} /> },
+  { titulo: 'Chame no WhatsApp', texto: 'Tire dúvidas, peça mais fotos e confirme a disponibilidade.', icone: <IconCar size={50} /> },
+  { titulo: 'Combine o pagamento', texto: 'À vista, financiamento ou troca, acertado direto com a loja.', icone: <IconWallet size={46} /> },
+  { titulo: 'Saia dirigindo', texto: 'Confira o carro no pátio, assine e leve a chave.', icone: <IconKey size={48} /> },
+]
+
+const equipe = [
+  { titulo: 'Vendas', texto: 'Atendimento ao cliente final', icone: <IconUser size={44} /> },
+  { titulo: 'Repasse', texto: 'Atendimento a lojistas', icone: <IconHandshake size={44} /> },
+  { titulo: 'WhatsApp', texto: 'Fotos, vídeos e dúvidas', icone: <IconWhatsApp size={40} /> },
+  { titulo: 'Documentação', texto: 'Transferência e papelada', icone: <IconCarCheck size={44} /> },
+]
+
+// Os 3 primeiros vão para a grade de avaliações; o banner usa os seguintes (ou todos, se forem poucos).
+const depoimentos = avaliacoes.length > 3 ? avaliacoes.slice(3) : avaliacoes
+
 export default function Home() {
   const trilho = useRef<HTMLDivElement>(null)
   const [procura, setProcura] = useState('')
+  const [depo, setDepo] = useState(0)
+  const mudarDepo = (passo: number) => setDepo((i) => (i + passo + depoimentos.length) % depoimentos.length)
 
   useEffect(() => {
     document.title = `${loja.nome} | ${loja.cidade} - ${loja.uf}`
@@ -76,8 +95,12 @@ export default function Home() {
 
   const avisar = (e: FormEvent) => {
     e.preventDefault()
-    const texto = procura.trim() || 'um carro'
-    window.open(linkWhatsApp(`Olá! Estou procurando ${texto}. Me avisem quando chegar?`), '_blank', 'noreferrer')
+    const nomeLoja = procura.trim()
+    window.open(
+      linkWhatsApp(`Olá! Sou lojista${nomeLoja ? ` (${nomeLoja})` : ''} e quero receber a lista de repasse.`),
+      '_blank',
+      'noreferrer',
+    )
   }
 
   return (
@@ -177,8 +200,8 @@ export default function Home() {
           {avaliacoes.length > 0 && (
             <>
               <header className="lp-topo lp-topo--centro lp-topo--p lp-topo--bloco">
-                <h2>O que dizem nossos clientes</h2>
-                <p>Opiniões de quem já comprou com a gente.</p>
+                <h2>Avaliações de clientes</h2>
+                <p>Veja o que falam de nós.</p>
               </header>
               <div className="lp-avaliacoes">
                 {avaliacoes.slice(0, 3).map((a, i) => (
@@ -205,13 +228,34 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="lp-secao lp-secao--como">
+        <div className="container">
+          <header className="lp-topo lp-topo--centro lp-topo--p">
+            <h2>Como funciona</h2>
+            <p>Comprar com a Leonardo é simples e direto.</p>
+          </header>
+          <ol className="lp-passos">
+            {passos.map((p, i) => (
+              <li key={p.titulo} className="lp-passo">
+                <span className="lp-passo__num">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{p.titulo}</h3>
+                <p>{p.texto}</p>
+                <span className="lp-passo__icone" aria-hidden>
+                  {p.icone}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       {comDesconto.length > 1 && (
-        <section className="lp-secao">
+        <section className="lp-secao lp-secao--carrossel">
           <div className="container">
-            <header className="lp-topo">
-              <div>
+            <header className="lp-topo lp-topo--carrossel">
+              <div className="lp-topo lp-topo--centro lp-topo--p">
                 <h2>Maiores descontos sobre a FIPE</h2>
-                <p>Carros com a maior diferença para a tabela do mês.</p>
+                <p>Os carros com a maior diferença para a tabela do mês.</p>
               </div>
               <div className="lp-setas">
                 <button onClick={() => rolar(-1)} aria-label="Anteriores">
@@ -224,76 +268,72 @@ export default function Home() {
             </header>
             <div className="lp-trilho" ref={trilho}>
               {comDesconto.map((v) => (
-                <CardVitrine key={v.id} veiculo={v} />
+                <CardVitrine key={v.id} veiculo={v} comDesconto />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      <section id="lojistas" className="lp-lojistas">
-        <div className="container lp-lojistas__grid">
-          <div className="lp-lojistas__texto">
-            <h2>Para lojistas</h2>
-            <p className="lp-lojistas__sub">Repasse de veículos para revendas da região.</p>
-            <p className="lp-lojistas__lead">
-              Peça a lista atualizada e receba fotos e valores de cada carro direto no WhatsApp. Atendimento com o
-              próprio Leonardo.
-            </p>
-            <ul>
-              <li>
-                <IconCheckCircle size={18} /> Unidade ou lote
-              </li>
-              <li>
-                <IconCheckCircle size={18} /> Fotos de cada carro
-              </li>
-              <li>
-                <IconCheckCircle size={18} /> Valor de repasse informado
-              </li>
-            </ul>
-            <a
-              className="lp-botao lp-botao--branco"
-              href={linkWhatsApp('Olá! Sou lojista e quero receber a lista de repasse.')}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <IconWhatsApp size={18} /> Receber lista de repasse
-            </a>
-          </div>
-          <div className="lp-lojistas__foto">
-            <Foto src={urlImagem('hilux', 1400)} alt="Picape do estoque" />
-          </div>
-        </div>
-      </section>
-
-      {vendidos.length > 0 && (
-        <section className="lp-secao">
-          <div className="container">
-            <header className="lp-topo lp-topo--centro">
-              <h2>Vendidos recentemente</h2>
-              <p>Alguns dos carros que já saíram do nosso pátio.</p>
-            </header>
-            <div className="lp-vendidos">
-              {vendidos.slice(0, 4).map((v) => (
-                <div key={v.id} className="lp-vendido">
-                  <div className="lp-vendido__foto">
-                    <Foto src={v.fotos[0]} alt={`${v.marca} ${v.modelo}`} />
-                    <span>Vendido</span>
-                  </div>
-                  <strong>
-                    {v.marca} {v.modelo}
-                  </strong>
-                  <small>{formatarAno(v)}</small>
-                </div>
-              ))}
+      {depoimentos.length > 0 && (
+        <section className="lp-depo">
+          <div className="container lp-depo__grid">
+            <div className="lp-depo__texto">
+              <h2>O que dizem nossos clientes</h2>
+              <p className="lp-depo__sub">Opiniões de quem já comprou com a gente.</p>
+              <figure className="lp-depo__cartao">
+                <span className="lp-depo__aspas" aria-hidden>
+                  “
+                </span>
+                <blockquote>{depoimentos[depo].texto}</blockquote>
+                <figcaption>
+                  <span className="lp-depo__avatar" aria-hidden>
+                    <IconUser size={22} />
+                  </span>
+                  <span>
+                    <strong>{depoimentos[depo].nome}</strong>
+                    <small>{depoimentos[depo].cidade}</small>
+                  </span>
+                  <span className="lp-depo__setas">
+                    <button onClick={() => mudarDepo(-1)} aria-label="Depoimento anterior">
+                      <IconChevron dir="left" size={16} />
+                    </button>
+                    <button onClick={() => mudarDepo(1)} aria-label="Próximo depoimento">
+                      <IconChevron size={16} />
+                    </button>
+                  </span>
+                </figcaption>
+              </figure>
+              <div className="lp-depo__pontos" aria-hidden>
+                {depoimentos.map((_, i) => (
+                  <span key={i} className={i === depo ? 'is-ativo' : ''} />
+                ))}
+              </div>
             </div>
+            <img className="lp-depo__carro" src="/categorias/hatch.webp" alt="" aria-hidden loading="lazy" />
           </div>
         </section>
       )}
 
-      <section className="lp-secao lp-secao--marcas">
+      <section className="lp-secao lp-secao--equipe">
         <div className="container">
-          <header className="lp-topo lp-topo--centro">
+          <header className="lp-topo lp-topo--centro lp-topo--p">
+            <h2>Nossa equipe</h2>
+            <p>Atendimento dedicado em cada etapa da compra.</p>
+          </header>
+          <div className="lp-equipe">
+            {equipe.map((e) => (
+              <div key={e.titulo} className="lp-membro">
+                <div className="lp-membro__foto">
+                  <span>{e.icone}</span>
+                </div>
+                <strong>{e.titulo}</strong>
+                <small>{e.texto}</small>
+              </div>
+            ))}
+          </div>
+
+          <header className="lp-topo lp-topo--centro lp-topo--p lp-topo--bloco">
             <h2>Marcas no estoque</h2>
             <p>Clique para ver os carros de cada marca.</p>
           </header>
@@ -307,24 +347,22 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="lp-aviso">
+      <section id="lojistas" className="lp-aviso">
         <div className="container lp-aviso__grid">
-          <div>
-            <h2>Não achou o carro que procura?</h2>
-            <p>Diga o modelo e avisamos pelo WhatsApp quando chegar um assim.</p>
+          <div className="lp-aviso__texto">
+            <h2>É lojista? Receba a lista de repasse</h2>
+            <p>Carros com fotos e valores direto no seu WhatsApp.</p>
             <form className="lp-aviso__form" onSubmit={avisar}>
               <input
                 value={procura}
                 onChange={(e) => setProcura(e.target.value)}
-                placeholder="Ex.: Hilux 2020 até R$ 200 mil"
-                aria-label="Carro que você procura"
+                placeholder="Nome da sua loja"
+                aria-label="Nome da sua loja"
               />
-              <button type="submit">Avisar</button>
+              <button type="submit">Receber lista</button>
             </form>
           </div>
-          <div className="lp-aviso__foto">
-            <Foto src={urlImagem('corollaCross', 1200)} alt="SUV do estoque" />
-          </div>
+          <img className="lp-aviso__carro" src="/categorias/suv.webp" alt="" aria-hidden loading="lazy" />
         </div>
       </section>
     </>
