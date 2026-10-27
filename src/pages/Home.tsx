@@ -11,11 +11,9 @@ import {
   IconCarCheck,
   IconChevron,
   IconHandshake,
-  IconKey,
   IconPin,
   IconTag,
   IconUser,
-  IconWallet,
   IconWhatsApp,
 } from '../components/Icons'
 import { abaixoFipe, formatarMoeda } from '../lib/format'
@@ -50,20 +48,6 @@ const destaques = [
   { icone: <IconTag size={22} />, titulo: 'Preço de repasse', texto: 'Valor informado carro a carro' },
   { icone: <IconWhatsApp size={21} />, titulo: 'Atendimento direto', texto: 'Fale com a loja pelo WhatsApp' },
   { icone: <IconPin size={22} />, titulo: 'Folha 27', texto: 'Em frente ao Mix Mateus' },
-]
-
-const motivos = [
-  { icone: <IconHandshake size={20} />, titulo: 'Repasse para lojistas', texto: 'Unidade ou lote, com lista atualizada.' },
-  { icone: <IconCar size={20} />, titulo: 'Multimarcas', texto: `${marcas.slice(0, 4).join(', ')} e mais.` },
-  { icone: <IconCarCheck size={20} />, titulo: 'Veja antes de fechar', texto: 'Agende uma visita para conferir.' },
-  { icone: <IconTag size={20} />, titulo: 'Comparado com a FIPE', texto: 'Diferença mostrada em cada anúncio.' },
-]
-
-const passos = [
-  { titulo: 'Escolha o carro', texto: 'Veja o estoque no site ou passe na loja na Folha 27.', icone: <IconPin size={46} /> },
-  { titulo: 'Chame no WhatsApp', texto: 'Tire dúvidas, peça mais fotos e confirme a disponibilidade.', icone: <IconCar size={50} /> },
-  { titulo: 'Combine o pagamento', texto: 'À vista, financiamento ou troca, acertado direto com a loja.', icone: <IconWallet size={46} /> },
-  { titulo: 'Saia dirigindo', texto: 'Confira o carro no pátio, assine e leve a chave.', icone: <IconKey size={48} /> },
 ]
 
 const equipe = [
@@ -181,25 +165,9 @@ export default function Home() {
 
       <section className="lp-secao lp-secao--depois">
         <div className="container">
-          <header className="lp-topo lp-topo--centro lp-topo--p">
-            <h2>Por que a Leonardo?</h2>
-            <p>Repasse de veículos simples e direto.</p>
-          </header>
-          <div className="lp-motivos">
-            {motivos.map((m) => (
-              <div key={m.titulo} className="lp-motivo">
-                <span className="lp-motivo__icone">{m.icone}</span>
-                <span>
-                  <strong>{m.titulo}</strong>
-                  {m.texto}
-                </span>
-              </div>
-            ))}
-          </div>
-
           {avaliacoes.length > 0 && (
             <>
-              <header className="lp-topo lp-topo--centro lp-topo--p lp-topo--bloco">
+              <header className="lp-topo lp-topo--centro lp-topo--p">
                 <h2>Avaliações de clientes</h2>
                 <p>Veja o que falam de nós.</p>
               </header>
@@ -225,27 +193,6 @@ export default function Home() {
               Ver estoque completo <IconArrowRight size={16} />
             </Link>
           </div>
-        </div>
-      </section>
-
-      <section className="lp-secao lp-secao--como">
-        <div className="container">
-          <header className="lp-topo lp-topo--centro lp-topo--p">
-            <h2>Como funciona</h2>
-            <p>Comprar com a Leonardo é simples e direto.</p>
-          </header>
-          <ol className="lp-passos">
-            {passos.map((p, i) => (
-              <li key={p.titulo} className="lp-passo">
-                <span className="lp-passo__num">{String(i + 1).padStart(2, '0')}</span>
-                <h3>{p.titulo}</h3>
-                <p>{p.texto}</p>
-                <span className="lp-passo__icone" aria-hidden>
-                  {p.icone}
-                </span>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 

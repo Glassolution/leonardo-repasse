@@ -645,8 +645,7 @@ button {
   padding-bottom: 26px;
 }
 
-.lp-faixa__item,
-.lp-motivo {
+.lp-faixa__item {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -654,14 +653,12 @@ button {
   color: var(--texto-suave);
 }
 
-.lp-faixa__item span:last-child,
-.lp-motivo span:last-child {
+.lp-faixa__item span:last-child {
   display: flex;
   flex-direction: column;
 }
 
-.lp-faixa__item strong,
-.lp-motivo strong {
+.lp-faixa__item strong {
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--tinta);
@@ -984,7 +981,7 @@ button {
   filter: drop-shadow(0 18px 18px rgb(3 10 40 / 35%));
 }
 
-/* Motivos, avaliações e destaques (abaixo do banner) */
+/* Avaliações e destaques (abaixo do banner) */
 
 .lp-secao--depois {
   padding-top: 64px;
@@ -1005,32 +1002,6 @@ button {
 
 .lp-topo--bloco {
   margin-top: 64px;
-}
-
-.lp-motivos {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.lp-motivo__icone {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: var(--azul-claro);
-  color: var(--azul);
-}
-
-.lp-motivo {
-  align-items: flex-start;
-  font-size: 0.76rem;
-}
-
-.lp-motivo strong {
-  font-size: 0.86rem;
 }
 
 .lp-avaliacoes {
@@ -1215,64 +1186,6 @@ button {
 
 .lp-trilho .cv {
   scroll-snap-align: start;
-}
-
-/* Como funciona */
-
-.lp-secao--como {
-  padding-top: 24px;
-}
-
-.lp-passos {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.lp-passo {
-  display: flex;
-  flex-direction: column;
-  padding: 26px 26px 30px;
-  border: 1px solid #eef1f6;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 6px 24px rgb(12 31 92 / 6%);
-}
-
-.lp-passo__num {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--azul);
-}
-
-.lp-passo h3 {
-  margin-top: 22px;
-  font-family: var(--fonte);
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.lp-passo p {
-  margin-top: 8px;
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--texto-suave);
-}
-
-.lp-passo__icone {
-  display: flex;
-  justify-content: center;
-  margin-top: auto;
-  padding-top: 26px;
-  color: var(--azul);
-}
-
-.lp-passo__icone svg {
-  fill: rgb(26 58 166 / 12%);
-  stroke-width: 1.5;
 }
 
 /* Carrossel (maiores descontos) */
@@ -1618,8 +1531,6 @@ button {
   }
 
   .lp-faixa,
-  .lp-motivos,
-  .lp-passos,
   .lp-equipe {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -1735,8 +1646,7 @@ button {
 }
 
 @media (max-width: 560px) {
-  .lp-faixa,
-  .lp-motivos {
+  .lp-faixa {
     grid-template-columns: 1fr;
     gap: 16px;
   }
