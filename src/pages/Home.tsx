@@ -232,7 +232,7 @@ export default function Home() {
                 <span className="lp-depo__aspas" aria-hidden>
                   “
                 </span>
-                <blockquote>{depoimentos[depo].texto}</blockquote>
+                <blockquote key={depo}>{depoimentos[depo].texto}</blockquote>
                 <figcaption>
                   <span className="lp-depo__avatar" aria-hidden>
                     <IconUser size={22} />

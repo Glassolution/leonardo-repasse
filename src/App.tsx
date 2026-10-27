@@ -9,6 +9,7 @@ import Veiculo from './pages/Veiculo'
 import Estoque from './pages/Estoque'
 import Creditos from './pages/Creditos'
 import NaoEncontrado from './pages/NaoEncontrado'
+import { useRevelar } from './lib/useRevelar'
 
 function useRolagem() {
   const { pathname, hash } = useLocation()
@@ -28,11 +29,12 @@ function useRolagem() {
 export default function App() {
   useRolagem()
   const { pathname } = useLocation()
+  useRevelar(pathname)
 
   return (
     <>
       <Header />
-      <main>
+      <main key={pathname} className="pagina">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/estoque" element={<Estoque />} />

@@ -3474,6 +3474,178 @@ button {
   }
 }
 
+/* ---------- Animações ---------- */
+
+:root {
+  --ease-suave: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes aproximar {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Troca de página */
+.pagina {
+  animation: aparecer 0.45s ease both;
+}
+
+/* Revelação na rolagem (classe aplicada por useRevelar) */
+.revela {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+
+.revela.is-visivel {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-suave),
+    transform 0.7s var(--ease-suave);
+  transition-delay: var(--atraso, 0ms);
+}
+
+/* Entrada do hero */
+.lp-hero__palco::before {
+  animation: aproximar 1.2s var(--ease-suave) both;
+}
+
+.lp-hero h1 {
+  animation: subir 0.8s var(--ease-suave) 0.1s both;
+}
+
+.lp-hero__texto > p {
+  animation: subir 0.8s var(--ease-suave) 0.22s both;
+}
+
+.lp-hero__busca {
+  animation: subir 0.8s var(--ease-suave) 0.34s both;
+}
+
+.lp-hero__cena {
+  animation: aparecer 1s ease 0.3s both;
+}
+
+/* Cabeçalho */
+.header {
+  animation: aparecer 0.6s ease both;
+}
+
+/* Catálogo: cards entram em sequência a cada filtro */
+.cat__grade .ce {
+  animation: subir 0.5s var(--ease-suave) both;
+}
+
+.cat__grade .ce:nth-child(2) { animation-delay: 0.04s; }
+.cat__grade .ce:nth-child(3) { animation-delay: 0.08s; }
+.cat__grade .ce:nth-child(4) { animation-delay: 0.12s; }
+.cat__grade .ce:nth-child(5) { animation-delay: 0.16s; }
+.cat__grade .ce:nth-child(6) { animation-delay: 0.2s; }
+.cat__grade .ce:nth-child(n + 7) { animation-delay: 0.24s; }
+
+.cat__etiquetas li {
+  animation: subir 0.3s var(--ease-suave) both;
+}
+
+/* Depoimento trocado pelas setas */
+.lp-depo blockquote {
+  animation: aparecer 0.45s ease both;
+}
+
+/* Micro-interações */
+.btn,
+.busca__botao,
+.lp-botao,
+.lp-oferta__botao,
+.ce__botao,
+.vp__botao,
+.header__cta {
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s var(--ease-suave),
+    box-shadow 0.2s ease;
+}
+
+.btn:hover,
+.busca__botao:hover,
+.lp-botao:hover,
+.lp-oferta__botao:hover,
+.ce__botao:hover,
+.vp__botao:hover,
+.header__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px -8px rgb(26 58 166 / 55%);
+}
+
+.btn:active,
+.busca__botao:active,
+.lp-botao:active,
+.ce__botao:active,
+.vp__botao:active {
+  transform: translateY(0);
+}
+
+.lp-tipo__foto img,
+.lp-oferta__carro {
+  transition: transform 0.5s var(--ease-suave);
+}
+
+.lp-tipo:hover .lp-tipo__foto img {
+  transform: translateX(4px) scale(1.04);
+}
+
+.lp-oferta:hover .lp-oferta__carro {
+  transform: translateX(-8px);
+}
+
+.whats-flutuante {
+  animation: aparecer 0.6s ease 0.8s both;
+  transition: transform 0.2s var(--ease-suave), background-color 0.2s ease;
+}
+
+.whats-flutuante:hover {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
+
+  .revela {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
