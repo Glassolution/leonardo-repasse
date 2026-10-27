@@ -1,171 +1,127 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { disponiveis, vendidos, type Categoria } from '../data/veiculos'
 import { urlImagem } from '../data/imagens'
 import { BuscaRapida } from '../components/BuscaRapida'
-import { CardDestaque } from '../components/CardDestaque'
+import { CardVitrine } from '../components/CardVitrine'
 import { Foto } from '../components/Foto'
 import {
   IconArrowRight,
+  IconCar,
+  IconCarCheck,
   IconCheckCircle,
+  IconChevron,
   IconHandshake,
-  IconInstagram,
   IconPin,
+  IconTag,
   IconWhatsApp,
 } from '../components/Icons'
-import { linkInstagram, linkMaps, linkMapsEmbed, linkWhatsApp, loja } from '../config/loja'
+import { abaixoFipe, formatarAno, formatarMoeda, formatarPreco } from '../lib/format'
+import { linkWhatsApp, loja } from '../config/loja'
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
-const marcas = Object.entries(
-  disponiveis.reduce<Record<string, number>>((acc, v) => ({ ...acc, [v.marca]: (acc[v.marca] ?? 0) + 1 }), {}),
-).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+const marcas = [...new Set(disponiveis.map((v) => v.marca))].sort()
 
 const categorias = (['SUV', 'Picape', 'Hatch', 'Sedã'] as Categoria[])
   .map((c) => ({ nome: c, lista: disponiveis.filter((v) => v.categoria === c) }))
   .filter((c) => c.lista.length > 0)
 
+const comDesconto = disponiveis
+  .filter((v) => v.status === 'disponivel' && abaixoFipe(v))
+  .sort((a, b) => (abaixoFipe(b) ?? 0) - (abaixoFipe(a) ?? 0))
+
+const oferta = comDesconto[0]
+
+const destaques = [
+  { icone: <IconCar size={22} />, titulo: `${disponiveis.length} carros no pátio`, texto: 'Multimarcas, de hatch a picape' },
+  { icone: <IconTag size={22} />, titulo: 'Preço de repasse', texto: 'Valor informado carro a carro' },
+  { icone: <IconWhatsApp size={21} />, titulo: 'Atendimento direto', texto: 'Fale com a loja pelo WhatsApp' },
+  { icone: <IconPin size={22} />, titulo: 'Folha 27', texto: 'Em frente ao Mix Mateus' },
+]
+
+const motivos = [
+  { icone: <IconHandshake size={22} />, titulo: 'Repasse para lojistas', texto: 'Unidade ou lote, com lista atualizada.' },
+  { icone: <IconCar size={22} />, titulo: 'Multimarcas', texto: `${marcas.slice(0, 4).join(', ')} e mais.` },
+  { icone: <IconCarCheck size={22} />, titulo: 'Veja antes de fechar', texto: 'Agende uma visita para conferir.' },
+  { icone: <IconTag size={22} />, titulo: 'Comparado com a FIPE', texto: 'Diferença mostrada em cada anúncio.' },
+]
+
 export default function Home() {
+  const trilho = useRef<HTMLDivElement>(null)
+  const [procura, setProcura] = useState('')
+
   useEffect(() => {
     document.title = `${loja.nome} | ${loja.cidade} - ${loja.uf}`
   }, [])
 
+  const rolar = (direcao: 1 | -1) => {
+    const el = trilho.current
+    if (!el) return
+    const card = el.querySelector<HTMLElement>('.cv')
+    el.scrollBy({ left: direcao * ((card?.offsetWidth ?? 300) + 20), behavior: 'smooth' })
+  }
+
+  const avisar = (e: FormEvent) => {
+    e.preventDefault()
+    const texto = procura.trim() || 'um carro'
+    window.open(linkWhatsApp(`Olá! Estou procurando ${texto}. Me avisem quando chegar?`), '_blank', 'noreferrer')
+  }
+
   return (
     <>
-      <section className="hero">
-        <img className="hero__fundo" src={urlImagem('tcross', 1920)} alt="" />
-        <div className="container hero__conteudo">
-          <p className="hero__sobre">Repasse de veículos em {loja.cidade} - {loja.uf}</p>
+      <section className="lp-hero">
+        <div className="container lp-hero__texto">
           <h1>
-            Procurando um carro?
+            Encontre seu próximo carro
             <br />
-            Ele pode estar no nosso pátio.
+            <span>com preço de repasse.</span>
           </h1>
-          <ul className="hero__lista">
-            <li>
-              <IconCheckCircle size={20} /> Multimarcas
-            </li>
-            <li>
-              <IconCheckCircle size={20} /> Repasse para lojistas
-            </li>
-            <li>
-              <IconCheckCircle size={20} /> Atendimento direto pelo WhatsApp
-            </li>
-          </ul>
+          <p>
+            Multimarcas em {loja.cidade}. Estoque atualizado, valores comparados com a FIPE e atendimento direto pelo
+            WhatsApp.
+          </p>
+          <BuscaRapida />
         </div>
-      </section>
-
-      <div className="container busca__wrap">
-        <BuscaRapida />
-      </div>
-
-      <section className="secao secao--marcas">
         <div className="container">
-          <header className="secao__topo">
-            <div>
-              <h2>Marcas no estoque</h2>
-              <p className="secao__sub">Carros de várias montadoras, todos no mesmo pátio.</p>
-            </div>
-            <Link to="/estoque" className="link-seta">
-              Ver todas <IconArrowRight size={16} />
-            </Link>
-          </header>
-          <ul className="marcas">
-            {marcas.map(([marca, total]) => (
-              <li key={marca}>
-                <Link to={`/estoque?marca=${encodeURIComponent(marca)}`} className="marca">
-                  <span className="marca__nome">{marca}</span>
-                  <span className="marca__total">
-                    {total} {total === 1 ? 'carro' : 'carros'}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="lp-hero__foto">
+            <Foto src={urlImagem('tcross', 1920)} alt="SUV no pátio da loja" carregamento="eager" />
+          </div>
         </div>
       </section>
 
-      <section className="secao">
+      <section className="container lp-faixa">
+        {destaques.map((d) => (
+          <div key={d.titulo} className="lp-faixa__item">
+            <span className="lp-icone">{d.icone}</span>
+            <span>
+              <strong>{d.titulo}</strong>
+              {d.texto}
+            </span>
+          </div>
+        ))}
+      </section>
+
+      <section className="lp-secao">
         <div className="container">
-          <header className="secao__topo">
-            <div>
-              <h2>Chegaram no pátio</h2>
-              <p className="secao__sub">Os últimos veículos que entraram no estoque.</p>
-            </div>
-          </header>
-          <div className="grade-destaque">
-            {recentes.slice(0, 6).map((v) => (
-              <CardDestaque key={v.id} veiculo={v} />
-            ))}
-          </div>
-          <div className="centro">
-            <Link to="/estoque" className="btn btn--azul">
-              Ver estoque completo <IconArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="lojistas" className="secao secao--cinza">
-        <div className="container split">
-          <div className="split__foto">
-            <Foto src={urlImagem('hilux', 1400)} alt="Picape no pátio" />
-            <div className="split__cartao">
-              <IconHandshake size={28} />
-              <span>
-                <strong>Repasse para lojistas</strong>
-                Unidade ou lote
-              </span>
-            </div>
-          </div>
-          <div className="split__texto">
-            <p className="sobretitulo">Para lojistas</p>
-            <h2>Abasteça sua loja com carros de repasse</h2>
-            <p className="split__lead">
-              Trabalhamos com repasse para revendedores da região. Peça a lista atualizada e receba fotos e valores
-              de cada carro direto no WhatsApp.
-            </p>
-            <ul className="lista-check">
-              <li>
-                <IconCheckCircle size={20} /> Lista atualizada, com fotos de cada carro
-              </li>
-              <li>
-                <IconCheckCircle size={20} /> Valor de repasse informado carro a carro
-              </li>
-              <li>
-                <IconCheckCircle size={20} /> Carros multimarcas, de hatch a picape
-              </li>
-              <li>
-                <IconCheckCircle size={20} /> Atendimento direto com o Leonardo
-              </li>
-            </ul>
-            <a
-              className="btn btn--whats"
-              href={linkWhatsApp('Olá! Sou lojista e quero receber a lista de repasse.')}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <IconWhatsApp size={18} /> Receber lista de repasse
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="secao">
-        <div className="container">
-          <header className="secao__topo">
+          <header className="lp-topo">
             <div>
               <h2>Navegue por categoria</h2>
-              <p className="secao__sub">Do primeiro carro à picape de trabalho.</p>
+              <p>Escolha o tipo de carro e veja o que temos no pátio.</p>
             </div>
+            <Link to="/estoque" className="lp-pilula">
+              Ver todos os carros
+            </Link>
           </header>
-          <div className="categorias">
+          <div className="lp-tipos">
             {categorias.map((c) => (
-              <Link key={c.nome} to={`/estoque?categoria=${encodeURIComponent(c.nome)}`} className="categoria">
-                <Foto src={c.lista[0].fotos[0]} alt={c.nome} />
-                <span className="categoria__info">
-                  <strong>{c.nome}</strong>
-                  {c.lista.length} {c.lista.length === 1 ? 'veículo' : 'veículos'}
+              <Link key={c.nome} to={`/estoque?categoria=${encodeURIComponent(c.nome)}`} className="lp-tipo">
+                <div className="lp-tipo__foto">
+                  <Foto src={c.lista[0].fotos[0]} alt={c.nome} />
+                </div>
+                <strong>{c.nome}</strong>
+                <span>
+                  {c.lista.length} {c.lista.length === 1 ? 'carro' : 'carros'}
                 </span>
               </Link>
             ))}
@@ -173,73 +129,188 @@ export default function Home() {
         </div>
       </section>
 
-      {vendidos.length > 0 && (
-        <section className="secao secao--cinza">
-          <div className="container">
-            <header className="secao__topo">
-              <div>
-                <h2>Vendidos recentemente</h2>
-                <p className="secao__sub">Não achou o que procura? Avisamos quando chegar um parecido.</p>
+      {oferta && (
+        <section className="container">
+          <div className="lp-oferta">
+            <div className="lp-oferta__texto">
+              <span className="lp-oferta__rotulo">Oferta da semana</span>
+              <h2>
+                {oferta.marca} {oferta.modelo} {formatarAno(oferta)}
+              </h2>
+              <p className="lp-oferta__valor">{formatarMoeda(abaixoFipe(oferta) ?? 0)} abaixo da FIPE</p>
+              <p className="lp-oferta__detalhe">
+                {oferta.versao} · {formatarPreco(oferta.preco)}
+              </p>
+              <Link to={`/veiculo/${oferta.id}`} className="lp-oferta__botao">
+                Ver oferta <IconArrowRight size={16} />
+              </Link>
+            </div>
+            <div className="lp-oferta__foto">
+              <Foto src={oferta.fotos[0]} alt={`${oferta.marca} ${oferta.modelo}`} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="lp-secao">
+        <div className="container">
+          <header className="lp-topo lp-topo--centro">
+            <h2>Por que comprar com a Leonardo?</h2>
+            <p>Repasse de veículos simples e direto.</p>
+          </header>
+          <div className="lp-motivos">
+            {motivos.map((m) => (
+              <div key={m.titulo} className="lp-motivo">
+                <span className="lp-icone lp-icone--suave">{m.icone}</span>
+                <span>
+                  <strong>{m.titulo}</strong>
+                  {m.texto}
+                </span>
               </div>
-              <a href={linkInstagram} target="_blank" rel="noreferrer" className="link-seta">
-                <IconInstagram size={16} /> Ver entregas no Instagram
-              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="lp-secao lp-secao--cinza">
+        <div className="container">
+          <header className="lp-topo lp-topo--centro">
+            <h2>Chegaram no pátio</h2>
+            <p>Os últimos carros que entraram no estoque.</p>
+          </header>
+          <div className="lp-grade">
+            {recentes.slice(0, 4).map((v) => (
+              <CardVitrine key={v.id} veiculo={v} />
+            ))}
+          </div>
+          <div className="lp-centro">
+            <Link to="/estoque" className="lp-botao">
+              Ver estoque completo <IconArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {comDesconto.length > 1 && (
+        <section className="lp-secao">
+          <div className="container">
+            <header className="lp-topo">
+              <div>
+                <h2>Maiores descontos sobre a FIPE</h2>
+                <p>Carros com a maior diferença para a tabela do mês.</p>
+              </div>
+              <div className="lp-setas">
+                <button onClick={() => rolar(-1)} aria-label="Anteriores">
+                  <IconChevron dir="left" size={18} />
+                </button>
+                <button onClick={() => rolar(1)} aria-label="Próximos">
+                  <IconChevron size={18} />
+                </button>
+              </div>
             </header>
-            <div className="grade-destaque">
-              {vendidos.slice(0, 3).map((v) => (
-                <CardDestaque key={v.id} veiculo={v} vendido />
+            <div className="lp-trilho" ref={trilho}>
+              {comDesconto.map((v) => (
+                <CardVitrine key={v.id} veiculo={v} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      <section id="localizacao" className="secao">
-        <div className="container local">
-          <div className="local__info">
-            <p className="sobretitulo">Localização</p>
-            <h2>Venha ver de perto</h2>
-            <address>
-              <IconPin size={22} />
-              <span>
-                <strong>{loja.endereco}</strong>
-                {loja.bairro}, {loja.cidade} - {loja.uf}
-              </span>
-            </address>
-            <div className="local__acoes">
-              <a className="btn btn--azul" href={linkMaps} target="_blank" rel="noreferrer">
-                Como chegar <IconArrowRight size={18} />
-              </a>
-              <a
-                className="btn btn--contorno"
-                href={linkWhatsApp('Olá! Quero agendar uma visita na loja.')}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Agendar visita
-              </a>
-            </div>
+      <section id="lojistas" className="lp-lojistas">
+        <div className="container lp-lojistas__grid">
+          <div className="lp-lojistas__texto">
+            <h2>Para lojistas</h2>
+            <p className="lp-lojistas__sub">Repasse de veículos para revendas da região.</p>
+            <p className="lp-lojistas__lead">
+              Peça a lista atualizada e receba fotos e valores de cada carro direto no WhatsApp. Atendimento com o
+              próprio Leonardo.
+            </p>
+            <ul>
+              <li>
+                <IconCheckCircle size={18} /> Unidade ou lote
+              </li>
+              <li>
+                <IconCheckCircle size={18} /> Fotos de cada carro
+              </li>
+              <li>
+                <IconCheckCircle size={18} /> Valor de repasse informado
+              </li>
+            </ul>
+            <a
+              className="lp-botao lp-botao--branco"
+              href={linkWhatsApp('Olá! Sou lojista e quero receber a lista de repasse.')}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <IconWhatsApp size={18} /> Receber lista de repasse
+            </a>
           </div>
-          <div className="local__mapa">
-            <iframe title={`Mapa: ${loja.nome}`} src={linkMapsEmbed} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          <div className="lp-lojistas__foto">
+            <Foto src={urlImagem('hilux', 1400)} alt="Picape do estoque" />
           </div>
         </div>
       </section>
 
-      <section className="chamada">
-        <div className="container chamada__inner">
+      {vendidos.length > 0 && (
+        <section className="lp-secao">
+          <div className="container">
+            <header className="lp-topo lp-topo--centro">
+              <h2>Vendidos recentemente</h2>
+              <p>Alguns dos carros que já saíram do nosso pátio.</p>
+            </header>
+            <div className="lp-vendidos">
+              {vendidos.slice(0, 4).map((v) => (
+                <div key={v.id} className="lp-vendido">
+                  <div className="lp-vendido__foto">
+                    <Foto src={v.fotos[0]} alt={`${v.marca} ${v.modelo}`} />
+                    <span>Vendido</span>
+                  </div>
+                  <strong>
+                    {v.marca} {v.modelo}
+                  </strong>
+                  <small>{formatarAno(v)}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="lp-secao lp-secao--marcas">
+        <div className="container">
+          <header className="lp-topo lp-topo--centro">
+            <h2>Marcas no estoque</h2>
+            <p>Clique para ver os carros de cada marca.</p>
+          </header>
+          <ul className="lp-marcas">
+            {marcas.map((m) => (
+              <li key={m}>
+                <Link to={`/estoque?marca=${encodeURIComponent(m)}`}>{m}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="lp-aviso">
+        <div className="container lp-aviso__grid">
           <div>
             <h2>Não achou o carro que procura?</h2>
-            <p>Diga o modelo, o ano e quanto quer investir. Avisamos quando chegar um assim.</p>
+            <p>Diga o modelo e avisamos pelo WhatsApp quando chegar um assim.</p>
+            <form className="lp-aviso__form" onSubmit={avisar}>
+              <input
+                value={procura}
+                onChange={(e) => setProcura(e.target.value)}
+                placeholder="Ex.: Hilux 2020 até R$ 200 mil"
+                aria-label="Carro que você procura"
+              />
+              <button type="submit">Avisar</button>
+            </form>
           </div>
-          <a
-            className="btn btn--branco"
-            href={linkWhatsApp('Olá! Estou procurando um carro. Modelo:  Ano:  Valor:')}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <IconWhatsApp size={18} /> Avisar pelo WhatsApp
-          </a>
+          <div className="lp-aviso__foto">
+            <Foto src={urlImagem('corollaCross', 1200)} alt="SUV do estoque" />
+          </div>
         </div>
       </section>
     </>

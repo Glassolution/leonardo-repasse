@@ -196,6 +196,13 @@ export const IconExpand = ({ size, className }: P) => (
   </svg>
 )
 
+export const IconTag = ({ size, className }: P) => (
+  <svg {...base(size)} className={className}>
+    <path d="M3 12V4.5A1.5 1.5 0 0 1 4.5 3H12l9 9-9 9Z" />
+    <circle cx="7.5" cy="7.5" r="1.4" />
+  </svg>
+)
+
 export const IconMenu = ({ size, className }: P) => (
   <svg {...base(size)} className={className}>
     <path d="M4 7h16M4 12h16M4 17h16" />
