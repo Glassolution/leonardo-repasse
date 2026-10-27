@@ -257,7 +257,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <img className="lp-depo__carro" src="/categorias/hatch.webp" alt="" aria-hidden loading="lazy" />
+            <img className="lp-depo__pessoa" src="/cliente.webp" alt="" aria-hidden loading="lazy" />
           </div>
         </section>
       )}
