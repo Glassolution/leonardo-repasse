@@ -221,8 +221,10 @@ export default function Home() {
       )}
 
       {depoimentos.length > 0 && (
-        <section className="lp-depo">
-          <div className="container lp-depo__grid">
+        <section className="container lp-depo-wrap">
+          <div className="lp-depo">
+            <div className="lp-depo__luz" aria-hidden />
+            <img className="lp-depo__pessoa" src="/cliente.webp" alt="" aria-hidden loading="lazy" />
             <div className="lp-depo__texto">
               <h2>O que dizem nossos clientes</h2>
               <p className="lp-depo__sub">Opiniões de quem já comprou com a gente.</p>
@@ -255,7 +257,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <img className="lp-depo__pessoa" src="/cliente.webp" alt="" aria-hidden loading="lazy" />
           </div>
         </section>
       )}

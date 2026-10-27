@@ -1217,33 +1217,58 @@ button {
 
 /* Banner de depoimentos */
 
-.lp-depo {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse 50% 90% at 85% 40%, rgb(150 190 255 / 45%), transparent 70%),
-    linear-gradient(110deg, #163393 0%, #1f4cc4 50%, #3a76ea 100%);
-  color: #fff;
+.lp-depo-wrap {
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
-.lp-depo__grid {
+.lp-depo {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  min-height: 400px;
-  padding-top: 56px;
-  padding-bottom: 56px;
+  isolation: isolate;
+  min-height: 420px;
+  padding: 52px 56px 44px;
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 0% 0%, rgb(255 255 255 / 12%), transparent 35%),
+    linear-gradient(115deg, #10287f 0%, #1c43b8 45%, #2f66df 75%, #5c8ff0 100%);
+  color: #fff;
+  box-shadow: 0 24px 50px -24px rgb(16 40 140 / 55%);
+}
+
+/* Luz clara atrás da pessoa, como uma janela de estúdio. */
+.lp-depo__luz {
+  position: absolute;
+  z-index: -1;
+  top: -10%;
+  right: -6%;
+  width: 58%;
+  height: 130%;
+  background:
+    radial-gradient(ellipse 50% 45% at 55% 45%, rgb(225 236 255 / 85%), transparent 72%),
+    radial-gradient(ellipse 70% 60% at 60% 60%, rgb(140 180 255 / 45%), transparent 75%);
+}
+
+.lp-depo__pessoa {
+  position: absolute;
+  z-index: 0;
+  right: 6%;
+  bottom: 0;
+  height: 96%;
+  width: auto;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 18%);
 }
 
 .lp-depo__texto {
   position: relative;
   z-index: 1;
+  max-width: 560px;
 }
 
 .lp-depo h2 {
   font-family: var(--fonte);
-  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+  font-size: clamp(1.5rem, 2.6vw, 1.95rem);
   font-weight: 700;
   color: #fff;
 }
@@ -1254,38 +1279,42 @@ button {
   color: rgb(255 255 255 / 80%);
 }
 
-.lp-depo__cartao {
-  position: relative;
-  margin: 26px 0 0;
-  padding: 28px 30px 24px;
-  border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 18px;
-  background: rgb(255 255 255 / 10%);
-  backdrop-filter: blur(10px);
-}
-
 .lp-depo__aspas {
   display: block;
-  height: 44px;
+  height: 46px;
   font-family: Georgia, serif;
-  font-size: 4.6rem;
+  font-size: 5.4rem;
   font-weight: 700;
   line-height: 1;
 }
 
+/* Cartão em vidro que avança sobre a foto e se dissolve à direita. */
+.lp-depo__cartao {
+  position: relative;
+  margin: 26px 0 0;
+  padding: 24px 30px 24px;
+  border-radius: 18px;
+  background: linear-gradient(90deg, rgb(18 48 150 / 72%) 0%, rgb(30 70 190 / 55%) 70%, rgb(40 90 210 / 0%) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  width: calc(100% + 90px);
+}
+
 .lp-depo blockquote {
   min-height: 3.4em;
-  margin: 8px 0 0;
-  font-size: 1.05rem;
-  font-weight: 500;
-  line-height: 1.6;
+  margin: 0;
+  padding-right: 90px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.65;
 }
 
 .lp-depo figcaption {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   margin-top: 22px;
+  padding-right: 90px;
 }
 
 .lp-depo figcaption > span:nth-child(2) {
@@ -1295,7 +1324,7 @@ button {
 }
 
 .lp-depo figcaption strong {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .lp-depo figcaption small {
@@ -1306,39 +1335,41 @@ button {
 .lp-depo__avatar {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: rgb(255 255 255 / 18%);
-  border: 2px solid rgb(255 255 255 / 45%);
+  background: rgb(255 255 255 / 92%);
+  color: var(--azul);
+  box-shadow: 0 0 0 3px rgb(255 255 255 / 25%);
 }
 
 .lp-depo__setas {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-left: auto;
 }
 
 .lp-depo__setas button {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgb(255 255 255 / 45%);
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgb(255 255 255 / 55%);
   border-radius: 50%;
-  background: none;
+  background: rgb(255 255 255 / 6%);
   color: #fff;
 }
 
 .lp-depo__setas button:hover {
-  background: rgb(255 255 255 / 15%);
+  background: rgb(255 255 255 / 18%);
 }
 
 .lp-depo__pontos {
   display: flex;
   justify-content: center;
   gap: 6px;
-  margin-top: 16px;
+  margin-top: 18px;
+  padding-right: 90px;
 }
 
 .lp-depo__pontos span {
@@ -1352,16 +1383,6 @@ button {
 .lp-depo__pontos span.is-ativo {
   width: 20px;
   background: #fff;
-}
-
-.lp-depo__pessoa {
-  position: absolute;
-  right: 10%;
-  bottom: 0;
-  height: 94%;
-  max-height: 430px;
-  width: auto;
-  filter: drop-shadow(0 20px 30px rgb(3 10 40 / 30%));
 }
 
 /* Equipe */
@@ -1526,21 +1547,52 @@ button {
     margin-top: 4px;
   }
 
-  .lp-aviso__grid,
-  .lp-depo__grid {
+  .lp-aviso__grid {
     grid-template-columns: 1fr;
   }
 
-  .lp-depo__grid {
-    padding-bottom: 0;
+  .lp-depo {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 22px 0;
+  }
+
+  .lp-depo__pessoa {
+    order: 2;
+  }
+
+  .lp-depo__texto {
+    max-width: none;
+  }
+
+  .lp-depo__cartao {
+    width: auto;
+    background: rgb(18 48 150 / 55%);
+  }
+
+  .lp-depo blockquote,
+  .lp-depo figcaption,
+  .lp-depo__pontos {
+    padding-right: 0;
   }
 
   .lp-depo__pessoa {
     position: relative;
     right: auto;
-    justify-self: center;
-    height: 320px;
-    margin-top: 24px;
+    display: block;
+    height: auto;
+    width: min(86%, 340px);
+    margin: 24px auto 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .lp-depo__luz {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 50%;
   }
 
   .lp-aviso__carro {
