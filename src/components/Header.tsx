@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Logo } from './Logo'
 import { IconClose, IconInstagram, IconMenu, IconWhatsApp } from './Icons'
 import { linkInstagram, linkMaps, linkWhatsApp } from '../config/loja'
@@ -7,9 +7,10 @@ import { linkInstagram, linkMaps, linkWhatsApp } from '../config/loja'
 export function Header() {
   const [aberto, setAberto] = useState(false)
   const fechar = () => setAberto(false)
+  const { pathname } = useLocation()
 
   return (
-    <header className="header">
+    <header className={`header ${pathname === '/' ? 'header--home' : ''}`}>
       <div className="container header__inner">
         <Link to="/" aria-label="Página inicial" onClick={fechar}>
           <Logo variante="escura" />

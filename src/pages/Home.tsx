@@ -19,9 +19,9 @@ import {
 import { abaixoFipe, formatarAno, formatarMoeda, formatarPreco } from '../lib/format'
 import { linkWhatsApp, loja } from '../config/loja'
 
-// Foto de fundo do hero: "Lake in forest near mountain", Unsplash (licença Unsplash, uso livre).
-// Usa /public/hero-fundo.jpg se existir; senão carrega direto do Unsplash.
-const FUNDOS_HERO = ['/hero-fundo.jpg', 'https://unsplash.com/photos/a38486QPWfY/download?w=2400']
+// Foto de fundo do hero (Lago di Braies, Wikimedia Commons). Usa /public/hero-fundo.jpg se existir;
+// senão tenta as fotos do Commons em ordem.
+const FUNDOS_HERO = ['/hero-fundo.jpg', urlImagem('paisagem', 2400), urlImagem('paisagem2', 2400)]
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
@@ -97,16 +97,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container lp-faixa">
-        {destaques.map((d) => (
-          <div key={d.titulo} className="lp-faixa__item">
-            <span className="lp-icone lp-icone--suave">{d.icone}</span>
-            <span>
-              <strong>{d.titulo}</strong>
-              {d.texto}
-            </span>
-          </div>
-        ))}
+      <section className="lp-faixa-wrap">
+        <div className="container lp-faixa">
+          {destaques.map((d) => (
+            <div key={d.titulo} className="lp-faixa__item">
+              <span className="lp-icone lp-icone--suave">{d.icone}</span>
+              <span>
+                <strong>{d.titulo}</strong>
+                {d.texto}
+              </span>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="lp-secao">

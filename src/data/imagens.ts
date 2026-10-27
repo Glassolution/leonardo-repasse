@@ -14,6 +14,8 @@ const arquivos = {
   compass: '0_Jeep_Compass_(MP)_1.jpg',
   kicks: '0_Nissan_Kicks_(P15)_1.jpg',
   hb20: 'HB20X_2nd_Generation_Frontal_View_(cropped).jpg',
+  paisagem: 'Pragser_Wildsee,_Italy_(Unsplash_p7huyfLrdzc).jpg',
+  paisagem2: 'Pragser_Wildsee_-_Lago_di_Braies_04.jpg',
 } as const
 
 export type Imagem = keyof typeof arquivos
