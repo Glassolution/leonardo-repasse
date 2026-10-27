@@ -22,6 +22,12 @@ export default function Creditos() {
             </a>
           </li>
         ))}
+        <li>
+          <a href="https://unsplash.com/photos/lake-in-forest-near-mountain-a38486QPWfY" target="_blank" rel="noreferrer">
+            Lake in forest near mountain
+          </a>{' '}
+          (fundo da página inicial), Nitish Meena no Unsplash
+        </li>
       </ul>
     </section>
   )
