@@ -81,14 +81,13 @@ export default function Home() {
         )}
         <div className="container lp-hero__texto">
           <h1>
-            Encontre seu próximo carro
+            Seminovos multimarcas em {loja.cidade}
             <br />
-            <span>Preço de repasse</span>, direto da loja.
+            <span>Valor de repasse</span>, sem enrolação.
           </h1>
           <p>
-            Multimarcas em {loja.cidade}. Valores comparados com a FIPE.
-            <br />
-            Atendimento direto pelo WhatsApp.
+            Veja o estoque, compare com a tabela FIPE
+            <br />e feche direto com a loja pelo WhatsApp.
           </p>
           <BuscaRapida />
         </div>
