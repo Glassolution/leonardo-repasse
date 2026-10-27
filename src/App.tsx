@@ -28,7 +28,8 @@ function useRolagem() {
 
 export default function App() {
   useRolagem()
-  const { pathname } = useLocation()
+  // search na key do Estoque: links com filtros diferentes recarregam os filtros da URL.
+  const { pathname, search } = useLocation()
   useRevelar(pathname)
 
   return (
@@ -37,7 +38,7 @@ export default function App() {
       <main key={pathname} className="pagina">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/estoque" element={<Estoque />} />
+          <Route path="/estoque" element={<Estoque key={search} />} />
           <Route path="/veiculo/:id" element={<Veiculo />} />
           <Route path="/creditos" element={<Creditos />} />
           <Route path="*" element={<NaoEncontrado />} />

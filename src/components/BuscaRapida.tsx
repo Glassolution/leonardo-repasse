@@ -1,75 +1,79 @@
-import { useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { disponiveis, type Categoria } from '../data/veiculos'
-import { faixasPreco } from '../lib/filtros'
+import { aplicarFiltros, faixasPreco, filtrosVazios } from '../lib/filtros'
 import { formatarMoeda } from '../lib/format'
 import { IconSearch } from './Icons'
+import { Seletor, type Opcao } from './Seletor'
 
 const marcas = [...new Set(disponiveis.map((v) => v.marca))].sort()
-const categorias = (['SUV', 'Picape', 'Hatch', 'Sedã'] as Categoria[]).filter((c) => disponiveis.some((v) => v.categoria === c))
+const categorias: Categoria[] = ['SUV', 'Sedã', 'Hatch', 'Picape']
 const anos = [...new Set(disponiveis.map((v) => v.anoModelo))].sort((a, b) => b - a)
+
+type Escolha = { marca: string; categoria: string; preco: string; ano: string }
+
+const contar = (e: Escolha) =>
+  aplicarFiltros(disponiveis, {
+    ...filtrosVazios,
+    marca: e.marca,
+    categorias: e.categoria ? [e.categoria as Categoria] : [],
+    precoMax: Number(e.preco) || 0,
+    anoMin: Number(e.ano) || 0,
+  }).length
 
 // Barra de busca da página inicial. Leva para /estoque com os filtros na URL.
 export function BuscaRapida() {
   const navegar = useNavigate()
-  const [marca, setMarca] = useState('')
-  const [categoria, setCategoria] = useState('')
-  const [preco, setPreco] = useState('')
-  const [ano, setAno] = useState('')
+  const [e, setE] = useState<Escolha>({ marca: '', categoria: '', preco: '', ano: '' })
+  const mudar = (campo: keyof Escolha) => (valor: string) => setE((atual) => ({ ...atual, [campo]: valor }))
 
-  const buscar = (e: FormEvent) => {
-    e.preventDefault()
+  // Cada opção mostra quantos carros sobram combinando com os outros campos já escolhidos.
+  const opcoes = useMemo(() => {
+    const com = (campo: keyof Escolha, valor: string) => contar({ ...e, [campo]: valor })
+    return {
+      marca: [{ valor: '', rotulo: 'Todas' }, ...marcas.map((m) => ({ valor: m, rotulo: m, total: com('marca', m) }))],
+      categoria: [
+        { valor: '', rotulo: 'Todas' },
+        ...categorias.map((c) => ({ valor: c, rotulo: c, total: com('categoria', c) })),
+      ],
+      preco: [
+        { valor: '', rotulo: 'Qualquer valor' },
+        ...faixasPreco.map((p) => ({ valor: String(p), rotulo: `Até ${formatarMoeda(p)}`, total: com('preco', String(p)) })),
+      ],
+      ano: [
+        { valor: '', rotulo: 'Qualquer ano' },
+        ...anos.map((a) => ({ valor: String(a), rotulo: `${a} ou mais novo`, total: com('ano', String(a)) })),
+      ],
+    } satisfies Record<keyof Escolha, Opcao[]>
+  }, [e])
+
+  const total = contar(e)
+
+  const buscar = (ev: FormEvent) => {
+    ev.preventDefault()
     const params = new URLSearchParams()
-    if (marca) params.set('marca', marca)
-    if (categoria) params.set('categoria', categoria)
-    if (preco) params.set('preco', preco)
-    if (ano) params.set('ano', ano)
+    if (e.marca) params.set('marca', e.marca)
+    if (e.categoria) params.set('categoria', e.categoria)
+    if (e.preco) params.set('preco', e.preco)
+    if (e.ano) params.set('ano', e.ano)
     const qs = params.toString()
     navegar(`/estoque${qs ? `?${qs}` : ''}`)
   }
 
   return (
     <form className="busca" onSubmit={buscar}>
-      <label>
-        <span>Marca</span>
-        <select value={marca} onChange={(e) => setMarca(e.target.value)}>
-          <option value="">Todas</option>
-          {marcas.map((m) => (
-            <option key={m}>{m}</option>
-          ))}
-        </select>
-      </label>
-      <label>
-        <span>Categoria</span>
-        <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-          <option value="">Todas</option>
-          {categorias.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
-      </label>
-      <label>
-        <span>Preço até</span>
-        <select value={preco} onChange={(e) => setPreco(e.target.value)}>
-          <option value="">Qualquer valor</option>
-          {faixasPreco.map((p) => (
-            <option key={p} value={p}>
-              {formatarMoeda(p)}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        <span>Ano a partir de</span>
-        <select value={ano} onChange={(e) => setAno(e.target.value)}>
-          <option value="">Qualquer ano</option>
-          {anos.map((a) => (
-            <option key={a}>{a}</option>
-          ))}
-        </select>
-      </label>
-      <button type="submit" className="busca__botao">
-        <IconSearch size={18} /> Buscar
+      <Seletor rotulo="Marca" valor={e.marca} opcoes={opcoes.marca} onChange={mudar('marca')} />
+      <Seletor rotulo="Categoria" valor={e.categoria} opcoes={opcoes.categoria} onChange={mudar('categoria')} />
+      <Seletor rotulo="Preço até" valor={e.preco} opcoes={opcoes.preco} onChange={mudar('preco')} />
+      <Seletor rotulo="Ano a partir de" valor={e.ano} opcoes={opcoes.ano} onChange={mudar('ano')} />
+      <button type="submit" className="busca__botao" disabled={total === 0}>
+        <IconSearch size={18} />
+        <span>
+          {total === 0 ? 'Nenhum carro' : 'Buscar'}
+          <small>
+            {total} {total === 1 ? 'carro' : 'carros'}
+          </small>
+        </span>
       </button>
     </form>
   )

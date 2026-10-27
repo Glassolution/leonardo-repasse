@@ -97,7 +97,11 @@ export default function Estoque() {
     f.marca && { rotulo: f.marca, remover: () => set('marca', '') },
     f.cambio && { rotulo: f.cambio, remover: () => set('cambio', '') },
     (f.precoMin || f.precoMax) && {
-      rotulo: `${formatarMoeda(lo)} – ${formatarMoeda(hi)}`,
+      rotulo: !f.precoMin
+        ? `Até ${formatarMoeda(hi)}`
+        : !f.precoMax
+          ? `A partir de ${formatarMoeda(lo)}`
+          : `${formatarMoeda(lo)} – ${formatarMoeda(hi)}`,
       remover: () => setF((a) => ({ ...a, precoMin: 0, precoMax: 0 })),
     },
     f.anoMin && { rotulo: `A partir de ${f.anoMin}`, remover: () => set('anoMin', 0) },

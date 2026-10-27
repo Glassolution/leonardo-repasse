@@ -477,7 +477,7 @@ button {
 /* Cobre exatamente a barra desenhada na imagem (x 130–1221, y 262–371). */
 .lp-hero__busca {
   position: absolute;
-  z-index: 1;
+  z-index: 5;
   left: calc(9.62% - 2px);
   width: calc(80.75% + 4px);
   top: calc(30.82% - 2px);
@@ -494,15 +494,9 @@ button {
   box-shadow: none;
 }
 
-.lp-hero__busca .busca label {
-  padding: 4px 18px;
-}
-
 .lp-hero__busca .busca__botao {
   height: 62%;
-  min-height: 40px;
-  border-radius: 12px;
-  font-size: 0.88rem;
+  min-height: 44px;
 }
 
 
@@ -539,6 +533,10 @@ button {
   }
 
   .lp-hero__busca {
+    position: relative;
+    z-index: 5;
+    top: auto;
+    left: auto;
     margin-top: 22px;
   }
 
@@ -550,12 +548,8 @@ button {
     box-shadow: 0 18px 40px rgb(12 31 92 / 10%);
   }
 
-  .lp-hero__busca .busca label {
-    padding: 8px 14px;
-  }
-
   .lp-hero__busca .busca__botao {
-    height: 48px;
+    height: 52px;
   }
 
   /* No celular mostra só o trecho do lago com o carro (x 250–1100, y 380–850 da imagem). */
@@ -581,54 +575,206 @@ button {
   text-align: left;
 }
 
-.busca label {
+/* Campo com lista própria (Seletor) */
+
+.seletor {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+}
+
+.seletor + .seletor::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: #e8ebf1;
+}
+
+.seletor__campo {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 6px 16px;
-  border-right: 1px solid #edf0f4;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  min-height: 56px;
+  padding: 6px 30px 6px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  text-align: left;
+  transition: background-color 0.15s ease;
 }
 
-.busca label:nth-child(4) {
-  border-right: 0;
+.seletor__campo:hover,
+.seletor.is-aberto .seletor__campo {
+  background: #f3f6fc;
 }
 
-.busca label span {
+.seletor__campo:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: -2px;
+}
+
+.seletor__rotulo {
   font-size: 0.74rem;
+  font-weight: 500;
   color: var(--texto-suave);
 }
 
-.busca select {
-  width: 100%;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  appearance: none;
-  background: none;
-  font-size: 0.9rem;
+.seletor__valor {
+  overflow: hidden;
+  font-size: 0.92rem;
   font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--tinta);
+}
+
+.seletor__valor.is-escolhido {
+  color: var(--azul);
+}
+
+.seletor__seta {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  color: #9aa1ae;
+  transform: translateY(-50%) rotate(90deg);
+  transition: transform 0.2s var(--ease-suave, ease), color 0.15s;
+}
+
+.seletor.is-aberto .seletor__seta {
+  color: var(--azul);
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.seletor__lista {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: max(100%, 220px);
+  max-height: 300px;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid #e8ebf1;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 24px 48px -12px rgb(12 31 92 / 22%);
+  animation: lista-abrir 0.18s var(--ease-suave, ease) both;
+  transform-origin: top left;
+}
+
+@keyframes lista-abrir {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.seletor__lista li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 0.88rem;
   color: var(--tinta);
   cursor: pointer;
+}
+
+.seletor__lista li.is-ativo {
+  background: #f1f4fb;
+}
+
+.seletor__lista li[aria-selected='true'] {
+  font-weight: 600;
+  color: var(--azul);
+}
+
+.seletor__lista li.is-vazio {
+  color: #a9afba;
+}
+
+.seletor__lista li small {
+  margin-left: auto;
+  min-width: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef1f7;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.seletor__lista li[aria-selected='true'] small {
+  background: var(--azul-claro);
+  color: var(--azul);
+}
+
+.seletor__ok {
+  flex-shrink: 0;
+  color: var(--azul);
+}
+
+.seletor__lista li small + .seletor__ok {
+  margin-left: 0;
+}
+
+.seletor__lista li span + .seletor__ok {
+  margin-left: auto;
 }
 
 .busca__botao {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 46px;
-  padding: 0 22px;
+  gap: 10px;
+  height: 52px;
+  padding: 0 24px;
   border: 0;
-  border-radius: 11px;
+  border-radius: 12px;
   background: var(--marinho);
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #fff;
   transition: background-color 0.15s;
 }
 
+.busca__botao > span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.busca__botao small {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 72%);
+}
+
 .busca__botao:hover {
   background: var(--azul);
+}
+
+.busca__botao:disabled {
+  background: #9aa3b8;
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
 }
 
 /* Faixa de destaques */
@@ -1536,10 +1682,17 @@ button {
     padding: 10px;
   }
 
-  .busca label {
-    border-right: 0;
-    border-radius: 10px;
-    background: #f6f8fb;
+  .seletor + .seletor::before {
+    display: none;
+  }
+
+  .seletor__campo {
+    background: #f5f7fb;
+  }
+
+  .seletor:nth-child(2n) .seletor__lista {
+    left: auto;
+    right: 0;
   }
 
   .busca__botao {
