@@ -5,6 +5,7 @@ import { urlImagem } from '../data/imagens'
 import { BuscaRapida } from '../components/BuscaRapida'
 import { CardVitrine } from '../components/CardVitrine'
 import { Foto } from '../components/Foto'
+import { Paisagem } from '../components/Paisagem'
 import {
   IconArrowRight,
   IconCar,
@@ -71,29 +72,29 @@ export default function Home() {
   return (
     <>
       <section className="lp-hero">
+        <Paisagem className="lp-hero__paisagem" />
         <div className="container lp-hero__texto">
           <h1>
             Encontre seu próximo carro
             <br />
-            <span>com preço de repasse.</span>
+            <span>Preço de repasse</span>, direto da loja.
           </h1>
           <p>
-            Multimarcas em {loja.cidade}. Estoque atualizado, valores comparados com a FIPE e atendimento direto pelo
-            WhatsApp.
+            Multimarcas em {loja.cidade}. Valores comparados com a FIPE.
+            <br />
+            Atendimento direto pelo WhatsApp.
           </p>
           <BuscaRapida />
         </div>
-        <div className="container">
-          <div className="lp-hero__foto">
-            <Foto src={urlImagem('tcross', 1920)} alt="SUV no pátio da loja" carregamento="eager" />
-          </div>
+        <div className="lp-hero__carro">
+          <img src="/hero-carro.png" alt="SUV prata" width={611} height={320} fetchPriority="high" />
         </div>
       </section>
 
       <section className="container lp-faixa">
         {destaques.map((d) => (
           <div key={d.titulo} className="lp-faixa__item">
-            <span className="lp-icone">{d.icone}</span>
+            <span className="lp-icone lp-icone--suave">{d.icone}</span>
             <span>
               <strong>{d.titulo}</strong>
               {d.texto}
