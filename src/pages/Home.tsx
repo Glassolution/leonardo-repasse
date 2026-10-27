@@ -5,7 +5,6 @@ import { urlImagem } from '../data/imagens'
 import { BuscaRapida } from '../components/BuscaRapida'
 import { CardVitrine } from '../components/CardVitrine'
 import { Foto } from '../components/Foto'
-import { Paisagem } from '../components/Paisagem'
 import {
   IconArrowRight,
   IconCar,
@@ -19,6 +18,10 @@ import {
 } from '../components/Icons'
 import { abaixoFipe, formatarAno, formatarMoeda, formatarPreco } from '../lib/format'
 import { linkWhatsApp, loja } from '../config/loja'
+
+// Foto de fundo do hero: "Lake in forest near mountain", Unsplash (licença Unsplash, uso livre).
+// Usa /public/hero-fundo.jpg se existir; senão carrega direto do Unsplash.
+const FUNDOS_HERO = ['/hero-fundo.jpg', 'https://unsplash.com/photos/a38486QPWfY/download?w=2400']
 
 const recentes = [...disponiveis].sort((a, b) => b.entrada.localeCompare(a.entrada))
 
@@ -51,6 +54,7 @@ const motivos = [
 export default function Home() {
   const trilho = useRef<HTMLDivElement>(null)
   const [procura, setProcura] = useState('')
+  const [fundo, setFundo] = useState(0)
 
   useEffect(() => {
     document.title = `${loja.nome} | ${loja.cidade} - ${loja.uf}`
@@ -72,7 +76,9 @@ export default function Home() {
   return (
     <>
       <section className="lp-hero">
-        <Paisagem className="lp-hero__paisagem" />
+        {fundo < FUNDOS_HERO.length && (
+          <img className="lp-hero__fundo" src={FUNDOS_HERO[fundo]} alt="" aria-hidden onError={() => setFundo((i) => i + 1)} />
+        )}
         <div className="container lp-hero__texto">
           <h1>
             Encontre seu próximo carro
@@ -87,7 +93,7 @@ export default function Home() {
           <BuscaRapida />
         </div>
         <div className="lp-hero__carro">
-          <img src="/hero-carro.png" alt="SUV prata" width={611} height={320} fetchPriority="high" />
+          <img src="/hero-carro.webp" alt="SUV prata" width={611} height={320} fetchPriority="high" />
         </div>
       </section>
 
